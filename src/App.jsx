@@ -376,29 +376,93 @@ const Btn = ({ children, onClick, color=P.accent, disabled, small, full }) => (
   }}>{children}</button>
 );
 
-const StatBars = ({ stats, stress, compact }) => (
-  <div style={{ display:"grid", gridTemplateColumns: compact?"1fr 1fr":"1fr", gap: compact?4:6 }}>
-    {SK.map(k=>(
-      <div key={k} style={{ fontSize:12 }}>
+const STAT_DESCS = {
+  academic: {
+    desc: "기초 지식과 학문적 지성을 뜻합니다.",
+    jobs: "의사, 과학자, 변호사, 약사, 교사 등 전문직 분야"
+  },
+  physical: {
+    desc: "기초 체력과 운동 능력 및 활동성을 뜻합니다.",
+    jobs: "프로 운동선수, 소방관, 경찰/군인, 탐험가 등"
+  },
+  creativity: {
+    desc: "독창적인 아이디어와 예술적 창의성을 뜻합니다.",
+    jobs: "디자이너, 웹툰 작가, 영화감독, 요리사 등 창작 분야"
+  },
+  social: {
+    desc: "타인과의 친화력, 소통 능력 및 리더십을 뜻합니다.",
+    jobs: "외교관, 교사, 기업가, 유튜버, 기자 등 소통 분야"
+  },
+  inquiry: {
+    desc: "과학적 분석력과 사물을 깊이 관찰하는 능력을 뜻합니다.",
+    jobs: "과학자, AI 연구원, 수의사, 로봇 공학자 등"
+  },
+  tech: {
+    desc: "코딩, 데이터 가공 및 기계 제어 능력을 뜻합니다.",
+    jobs: "프로그래머, 게임 개발자, AI 연구원, 데이터 분석가 등"
+  },
+  emotion: {
+    desc: "예술적 감수성과 깊은 정서 공감 능력을 뜻합니다.",
+    jobs: "음악가, 수의사, 간호사, 요리사 등 감성 분야"
+  },
+  grit: {
+    desc: "어려운 과제를 끝까지 밀고 나가는 인내심과 의지를 뜻합니다.",
+    jobs: "e스포츠 선수, 변호사, 기업가, 웹툰 작가 등"
+  }
+};
+
+const StatBars = ({ stats, stress, compact }) => {
+  const [expanded, setExpanded] = useState(null);
+
+  return (
+    <div style={{ display:"grid", gridTemplateColumns: compact?"1fr 1fr":"1fr", gap: compact?6:8 }}>
+      {SK.map(k=>{
+        const isExp = expanded === k;
+        return (
+          <div key={k} style={{ fontSize:12 }}>
+            <div style={{ display:"flex", justifyContent:"space-between", marginBottom:2 }}>
+              <span 
+                onClick={() => setExpanded(isExp ? null : k)} 
+                style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 4, fontWeight: isExp ? 700 : 400, color: isExp ? STAT_META[k].color : P.text, transition: "all .2s" }}
+              >
+                {STAT_META[k].icon} {STAT_META[k].name}
+                <span style={{ fontSize: 9, opacity: 0.5, marginLeft: 2 }}>{isExp ? "▲" : "▼"}</span>
+              </span>
+              <span style={{color:P.muted}}>{stats[k]}</span>
+            </div>
+            <div style={{ height:6, background:"rgba(255,255,255,.08)", borderRadius:3, overflow:"hidden", marginBottom: isExp ? 6 : 0 }}>
+              <div style={{ width:`${stats[k]}%`, height:"100%", background:STAT_META[k].color, borderRadius:3, transition:"width .5s" }} />
+            </div>
+            {isExp && STAT_DESCS[k] && (
+              <div style={{
+                background: "rgba(255,255,255,0.03)",
+                borderLeft: `3px solid ${STAT_META[k].color}`,
+                borderRadius: "0 6px 6px 0",
+                padding: "8px 10px",
+                fontSize: "11px",
+                color: P.muted,
+                lineHeight: "1.4",
+                marginBottom: 6,
+                animation: "fadeIn 0.2s ease"
+              }}>
+                <div style={{ color: P.text, fontWeight: 600, marginBottom: 2 }}>{STAT_DESCS[k].desc}</div>
+                <div>🎯 관련 진로: <span style={{ color: P.gold }}>{STAT_DESCS[k].jobs}</span></div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+      <div style={{ fontSize:12 }}>
         <div style={{ display:"flex", justifyContent:"space-between", marginBottom:2 }}>
-          <span>{STAT_META[k].icon} {STAT_META[k].name}</span>
-          <span style={{color:P.muted}}>{stats[k]}</span>
+          <span>😰 스트레스</span><span style={{color:P.muted}}>{stress}</span>
         </div>
         <div style={{ height:6, background:"rgba(255,255,255,.08)", borderRadius:3, overflow:"hidden" }}>
-          <div style={{ width:`${stats[k]}%`, height:"100%", background:STAT_META[k].color, borderRadius:3, transition:"width .5s" }} />
+          <div style={{ width:`${stress}%`, height:"100%", background:P.red, borderRadius:3, transition:"width .5s" }} />
         </div>
       </div>
-    ))}
-    <div style={{ fontSize:12 }}>
-      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:2 }}>
-        <span>😰 스트레스</span><span style={{color:P.muted}}>{stress}</span>
-      </div>
-      <div style={{ height:6, background:"rgba(255,255,255,.08)", borderRadius:3, overflow:"hidden" }}>
-        <div style={{ width:`${stress}%`, height:"100%", background:P.red, borderRadius:3, transition:"width .5s" }} />
-      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const GlassCard = ({ children, accent, onClick, selected, style:s }) => (
   <div onClick={onClick} style={{
