@@ -435,6 +435,7 @@ const StatBars = ({ stats, stress, compact }) => {
     <div style={{ display:"grid", gridTemplateColumns: compact?"1fr 1fr":"1fr", gap: compact?6:8 }}>
       {SK.map(k=>{
         const isExp = expanded === k;
+        const val = stats[k] ?? 10;
         return (
           <div key={k} style={{ fontSize:12 }}>
             <div style={{ display:"flex", justifyContent:"space-between", marginBottom:2 }}>
@@ -445,10 +446,10 @@ const StatBars = ({ stats, stress, compact }) => {
                 {STAT_META[k].icon} {STAT_META[k].name}
                 <span style={{ fontSize: 9, opacity: 0.5, marginLeft: 2 }}>{isExp ? "▲" : "▼"}</span>
               </span>
-              <span style={{color:P.muted}}>{stats[k]}</span>
+              <span style={{color:P.muted}}>{val}</span>
             </div>
             <div style={{ height:6, background:"rgba(255,255,255,.08)", borderRadius:3, overflow:"hidden", marginBottom: isExp ? 6 : 0 }}>
-              <div style={{ width:`${stats[k]}%`, height:"100%", background:STAT_META[k].color, borderRadius:3, transition:"width .5s" }} />
+              <div style={{ width:`${val}%`, height:"100%", background:STAT_META[k].color, borderRadius:3, transition:"width .5s" }} />
             </div>
             {isExp && STAT_DESCS[k] && (
               <div style={{
@@ -1123,7 +1124,13 @@ export default function App() {
 
   const handleLoad = (slot) => {
     const g = saves[slot];
-    if (g) { setG(g); setScreen("schedule"); }
+    if (g) {
+      if (g.stats && g.stats.charm === undefined) {
+        g.stats.charm = 10;
+      }
+      setG(g);
+      setScreen("schedule");
+    }
   };
 
   const handleConfirm = (clsId, clubId, vacId) => {
