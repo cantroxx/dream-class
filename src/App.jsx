@@ -228,6 +228,122 @@ function calcJob(stats) {
   return best || { name:"프리랜서", emoji:"🌈", cat:"기본" };
 }
 
+function calcJobProgress(stats) {
+  const progressList = [];
+  for (const j of JOBS) {
+    const reqs = Object.entries(j.req);
+    if (reqs.length === 0) continue;
+    let totalReq = 0;
+    let metReq = 0;
+    const missing = [];
+    for (const [k, reqVal] of reqs) {
+      totalReq += reqVal;
+      const currentVal = stats[k] || 10;
+      metReq += Math.min(currentVal, reqVal);
+      if (currentVal < reqVal) {
+        missing.push({ key: k, amount: reqVal - currentVal });
+      }
+    }
+    const percentage = Math.round((metReq / totalReq) * 100);
+    progressList.push({
+      name: j.name,
+      emoji: j.emoji,
+      cat: j.cat,
+      percentage,
+      missing,
+    });
+  }
+  let upcoming = progressList.filter(p => p.percentage < 100);
+  upcoming.sort((a, b) => b.percentage - a.percentage);
+  if (upcoming.length === 0) {
+    upcoming = progressList.sort((a, b) => b.percentage - a.percentage);
+  }
+  return upcoming.slice(0, 2);
+}
+
+function getPeerEvaluations(G) {
+  const { stats, stress, hiddenEvents = 0, volunteerCount = 0, maxConsecutiveClub = 0 } = G;
+  
+  let teacher = "성실하게 학교 생활에 적응해가고 있습니다. 앞으로의 모습이 기대되는군요.";
+  if (stress >= 75) {
+    teacher = "최근 학업 스트레스가 지나쳐 보입니다. 건강을 해칠까 걱정이 되니 조금 쉬어가며 하길 조언합니다.";
+  } else if (stats.academic >= 80) {
+    teacher = "학업 역량이 전국구 수준으로 매우 탁월합니다. 수업 태도 또한 타의 모범이 됩니다.";
+  } else if (stats.academic >= 50) {
+    teacher = "공부 머리가 명석하고 성적이 우수합니다. 집중력이 아주 높습니다.";
+  } else if (stats.inquiry >= 55) {
+    teacher = "현상에 대해 끊임없이 탐구하는 자세가 훌륭합니다. 과학적 소질이 크게 돋보입니다.";
+  } else if (stats.social >= 60) {
+    teacher = "친구들과 대인 관계가 원만하고 배려심이 깊습니다. 학급 내 인망이 높습니다.";
+  } else if (stats.physical >= 70) {
+    teacher = "체력이 뛰어나 체육 활동에 기여도가 높습니다. 아주 건강한 학생입니다.";
+  } else if (stats.creativity >= 60) {
+    teacher = "상상력이 풍부하여 미술이나 음악 수업 등에서 독창적인 결과물을 냅니다.";
+  }
+  
+  let parent = "우리 아이가 건강하고 밝게만 자라주면 좋겠구나.";
+  if (stress >= 80) {
+    parent = "얘야, 얼굴이 많이 상했구나... 공부도 좋지만 가끔은 마음껏 놀면서 쉬려무나.";
+  } else if (stress >= 50) {
+    parent = "요즘 잠도 줄여가며 무리하는 것 같아 걱정이야. 홍삼이라도 챙겨줘야겠구나.";
+  } else if (stats.grit >= 75) {
+    parent = "한번 시작한 일을 끝까지 포기하지 않는 우리 아이가 참 자랑스럽단다.";
+  } else if (stats.emotion >= 60) {
+    parent = "어쩜 이렇게 마음씨가 곱고 감수성이 풍부할까? 우리 집의 보물이야.";
+  } else if (stats.academic >= 70) {
+    parent = "공부도 스스로 척척 알아서 잘하니 엄마 아빠는 걱정이 하나도 없단다.";
+  }
+  
+  let friend = "야! 매점 갈래? 이따 나랑 떡볶이 먹으러 가자!";
+  if (stress >= 75) {
+    friend = "너 요즘 얼굴빛이 완전 먹구름이야... 매일 피곤해 쩔어 있는 거 알아? 오늘은 피시방 가서 놀자!";
+  } else if (stats.tech >= 60) {
+    friend = "와, 너 컴퓨터나 코딩할 때 진짜 멋있어! 나중에 대박 게임 만들면 내 캐릭터 꼭 넣어줘!";
+  } else if (stats.physical >= 60) {
+    friend = "체육 시간에 너 뛰는 거 보면 진짜 대박이야. 체육대회 계주는 무조건 네가 앵커 해야 돼!";
+  } else if (stats.creativity >= 60) {
+    friend = "야, 너 저번에 그린 낙서나 아이디어 낸 거 진짜 특이하고 웃기더라! 천재 아니냐?";
+  } else if (stats.social >= 70) {
+    friend = "너는 남의 이야기를 항상 잘 들어줘서 편해. 나 너랑 단짝 친구 되길 진짜 잘한 것 같아!";
+  } else if (stats.academic >= 75) {
+    friend = "시험 기간에 너한테 문제 물어보면 설명 진짜 잘해줘서 고마워! 너는 과외 해도 되겠다.";
+  }
+  
+  let rumor = "옆 반 애들이 그러는데, 우리 반에 진짜 평범하게 노력하는 애가 있대.";
+  if (hiddenEvents >= 3) {
+    rumor = `소문 들었어? 최근 대성공을 ${hiddenEvents}번이나 터뜨린 엄청난 천재가 우리 학년에 나타났다는 소문이 돌아!`;
+  } else if (stats.academic >= 85 && stats.physical >= 80) {
+    rumor = "라이벌: 공부도 최상위권이고 운동도 날아다니는 사기 캐릭터... 도대체 약점이 뭐지?";
+  } else if (SK.every(k => stats[k] >= 50)) {
+    rumor = "학급 친구들: 걔는 못하는 게 없어. 학업, 예술, 운동까지 다 평균 이상인 육각형 인간이야.";
+  } else if (maxConsecutiveClub >= 6) {
+    rumor = "동아리 부원: 걔는 거의 동아리 방에 살다시피 해. 이미 동아리의 기둥 같은 존재야!";
+  } else if (volunteerCount >= 3) {
+    rumor = "교무실 소문: OO이가 봉사활동을 정말 많이 다녀서 봉사상을 받을 후보 1순위라더라.";
+  } else if (SK.some(k => stats[k] >= 90)) {
+    const bestStatKey = SK.reduce((a, b) => stats[a] >= stats[b] ? a : b);
+    rumor = `학생들 소문: 걔는 다른 건 몰라도 ${STAT_META[bestStatKey].name} 하나만큼은 학교 탑이라 아무도 못 건드려.`;
+  }
+  
+  return { teacher, parent, friend, rumor };
+}
+
+function getCurrentStateLabel(G) {
+  const { stats, stress } = G;
+  if (stress >= 80) return "💥 번아웃 위험 (휴식 절대 필요)";
+  if (stress >= 50) return "😰 누적된 피로 (스트레스 관리 필요)";
+  if (stats.academic >= 70 && stats.inquiry >= 70) return "🔬 미래의 노벨상 후보";
+  if (stats.academic >= 60 && stats.grit >= 60) return "🔥 끈기의 학구파";
+  if (stats.physical >= 75) return "🦁 지치지 않는 야생마";
+  if (stats.tech >= 75) return "💻 천재 프로그래머";
+  if (stats.creativity >= 70 || stats.emotion >= 70) return "🎨 예술적 감수성의 소유자";
+  if (stats.social >= 75) return "🎉 분위기 메이커 골목대장";
+  const vals = SK.map(k=>stats[k]);
+  const diff = Math.max(...vals) - Math.min(...vals);
+  if (diff <= 15 && SK.every(k => stats[k] >= 30)) return "⚖️ 균형 잡힌 육각형 인재";
+  return "🌱 무한한 잠재력의 새내기";
+}
+
 function calcTitles(stats, flags) {
   return TITLES.filter(t => { try { return t.check(stats, flags); } catch { return false; } });
 }
@@ -290,6 +406,233 @@ const GlassCard = ({ children, accent, onClick, selected, style:s }) => (
     borderRadius:12, padding:"12px 16px", cursor: onClick?"pointer":"default", transition:"all .2s", ...s,
   }}>{children}</div>
 );
+
+function StudentAvatar({ stats, stress, school, width = 120, height = 120 }) {
+  const isHighAcademic = stats.academic >= 50 || stats.inquiry >= 50;
+  const isHighPhysical = stats.physical >= 50;
+  const isHighTech = stats.tech >= 50;
+  const isHighArt = stats.creativity >= 50 || stats.emotion >= 50;
+  const isHighGrit = stats.grit >= 50;
+  
+  let eyeColor = "#1e293b";
+  let showDarkCircles = false;
+  let showSweat = false;
+  
+  let eyesPath = (
+    <>
+      <circle cx="45" cy="55" r="4" fill={eyeColor} />
+      <circle cx="75" cy="55" r="4" fill={eyeColor} />
+    </>
+  );
+  let mouthPath = <path d="M 50 70 Q 60 78 70 70" stroke={eyeColor} strokeWidth="3" fill="none" strokeLinecap="round" />;
+  
+  if (stress >= 80) {
+    eyesPath = (
+      <>
+        <line x1="41" y1="51" x2="49" y2="59" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
+        <line x1="49" y1="51" x2="41" y2="59" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
+        <line x1="71" y1="51" x2="79" y2="59" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
+        <line x1="79" y1="51" x2="71" y2="59" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
+      </>
+    );
+    mouthPath = <path d="M 52 73 Q 60 67 68 73" stroke="#ef4444" strokeWidth="3" fill="none" strokeLinecap="round" />;
+    showDarkCircles = true;
+  } else if (stress >= 60) {
+    eyesPath = (
+      <>
+        <ellipse cx="45" cy="56" rx="4" ry="2.5" fill={eyeColor} />
+        <ellipse cx="75" cy="56" rx="4" ry="2.5" fill={eyeColor} />
+        <path d="M 38 48 Q 45 46 50 51" stroke={eyeColor} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <path d="M 82 48 Q 75 46 70 51" stroke={eyeColor} strokeWidth="2.5" fill="none" strokeLinecap="round" />
+      </>
+    );
+    mouthPath = <line x1="53" y1="70" x2="67" y2="70" stroke={eyeColor} strokeWidth="3" strokeLinecap="round" />;
+    showSweat = true;
+  } else if (stress < 30) {
+    eyesPath = (
+      <>
+        <path d="M 39 57 Q 45 49 51 57" stroke={P.green} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+        <path d="M 69 57 Q 75 49 81 57" stroke={P.green} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      </>
+    );
+    mouthPath = <path d="M 48 68 Q 60 82 72 68 Z" fill="#ef4444" />;
+  }
+
+  let shirtColor = "#f8fafc";
+  let collarColor = "#cbd5e1";
+  let tieColor = "#94a3b8";
+  
+  if (school === "elementary") {
+    shirtColor = "#fef08a";
+    collarColor = "#ca8a04";
+    tieColor = "";
+  } else if (school === "middle") {
+    shirtColor = "#e2e8f0";
+    collarColor = "#1e293b";
+    tieColor = "#ef4444";
+  } else {
+    shirtColor = "#cbd5e1";
+    collarColor = "#0f172a";
+    tieColor = "#fbbf24";
+  }
+
+  return (
+    <svg width={width} height={height} viewBox="0 0 120 120" style={{ overflow: "visible" }}>
+      {isHighGrit && (
+        <g opacity="0.8">
+          <path d="M 20 80 Q 5 -10 60 10 Q 115 -10 100 80 Z" fill="url(#gritFlame)" opacity="0.6" />
+          <path d="M 30 80 Q 20 15 60 25 Q 100 15 90 80 Z" fill="url(#gritFlameInner)" opacity="0.8" />
+        </g>
+      )}
+
+      <defs>
+        <radialGradient id="gritFlame" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
+          <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="gritFlameInner" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#facc15" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#ffedd5" />
+          <stop offset="100%" stopColor="#fed7aa" />
+        </linearGradient>
+      </defs>
+
+      <path d="M 25 110 Q 60 90 95 110 L 95 120 L 25 120 Z" fill={collarColor} />
+      <path d="M 45 98 L 60 115 L 75 98 Z" fill={shirtColor} />
+      
+      {tieColor && (
+        <path d="M 57 110 L 63 110 L 65 125 L 60 130 L 55 125 Z" fill={tieColor} />
+      )}
+
+      {school === "elementary" && (
+        <>
+          <path d="M 32 99 Q 34 110 38 120" stroke="#ea580c" strokeWidth="5" fill="none" strokeLinecap="round" />
+          <path d="M 88 99 Q 86 110 82 120" stroke="#ea580c" strokeWidth="5" fill="none" strokeLinecap="round" />
+        </>
+      )}
+
+      <rect x="52" y="80" width="16" height="15" rx="3" fill="#fed7aa" />
+      <circle cx="60" cy="60" r="32" fill="url(#skinGrad)" stroke="#fdba74" strokeWidth="1.5" />
+
+      {showSweat && (
+        <path d="M 88 48 Q 90 40 92 48 Q 95 53 92 56 Q 89 53 88 48" fill="#38bdf8" />
+      )}
+
+      {showDarkCircles && (
+        <>
+          <ellipse cx="45" cy="62" rx="8" ry="4" fill="#6366f1" opacity="0.3" />
+          <ellipse cx="75" cy="62" rx="8" ry="4" fill="#6366f1" opacity="0.3" />
+        </>
+      )}
+
+      {eyesPath}
+      {mouthPath}
+
+      {stress < 30 && (
+        <>
+          <ellipse cx="38" cy="65" rx="4" ry="2" fill="#f43f5e" opacity="0.4" />
+          <ellipse cx="82" cy="65" rx="4" ry="2" fill="#f43f5e" opacity="0.4" />
+        </>
+      )}
+
+      <path d="M 28 50 Q 60 30 92 50 Q 85 30 60 28 Q 35 30 28 50" fill="#475569" />
+      <path d="M 28 50 Q 24 65 26 75 Q 30 75 31 55" fill="#334155" />
+      <path d="M 92 50 Q 96 65 94 75 Q 90 75 89 55" fill="#334155" />
+
+      {isHighPhysical && (
+        <g>
+          <path d="M 33 37 Q 60 28 87 37 Q 88 41 87 45 Q 60 36 33 45 Z" fill="#ef4444" stroke="#dc2626" strokeWidth="1" />
+          <path d="M 35 41 Q 60 32 85 41" stroke="#ffffff" strokeWidth="2.5" fill="none" />
+        </g>
+      )}
+
+      {isHighAcademic && (
+        <g stroke="#475569" strokeWidth="3" fill="none" strokeLinecap="round">
+          <circle cx="45" cy="56" r="10" />
+          <circle cx="75" cy="56" r="10" />
+          <path d="M 55 56 L 65 56" />
+          <path d="M 35 56 L 27 50" />
+          <path d="M 85 56 L 93 50" />
+        </g>
+      )}
+
+      {isHighArt && (
+        <g>
+          <path d="M 30 35 Q 20 20 60 15 Q 100 20 90 35 Q 75 25 60 26 Q 45 25 30 35" fill="#a78bfa" stroke="#8b5cf6" strokeWidth="1" />
+          <path d="M 60 15 L 60 9" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round" />
+        </g>
+      )}
+
+      {isHighTech && (
+        <g>
+          <path d="M 32 45 Q 60 18 88 45" stroke="#06b6d4" strokeWidth="4" fill="none" />
+          <rect x="23" y="45" width="8" height="18" rx="4" fill="#0891b2" />
+          <rect x="20" y="48" width="4" height="12" rx="2" fill="#22d3ee" />
+          <rect x="89" y="45" width="8" height="18" rx="4" fill="#0891b2" />
+          <rect x="96" y="48" width="4" height="12" rx="2" fill="#22d3ee" />
+        </g>
+      )}
+    </svg>
+  );
+}
+
+const SchoolBgDecor = ({ school }) => {
+  if (school === "elementary") {
+    return (
+      <div style={{ width: "100%", height: 60, borderRadius: 12, overflow: "hidden", position: "relative", marginBottom: 12, background: "linear-gradient(to right, #38bdf8, #bae6fd)" }}>
+        <svg width="100%" height="100%" viewBox="0 0 400 60" preserveAspectRatio="none" style={{ position: "absolute", bottom: 0, left: 0 }}>
+          <circle cx="350" cy="15" r="10" fill="#fbbf24" opacity="0.8" />
+          <path d="M -20 60 Q 80 40 180 55 Q 280 42 420 60 L 420 80 L -20 80 Z" fill="#4ade80" />
+          <path d="M 100 60 Q 200 45 300 58 Q 380 48 440 60 L 440 80 L 100 80 Z" fill="#22c55e" opacity="0.7" />
+          <path d="M 40 25 Q 50 15 60 25 Q 70 15 80 25 Q 90 25 80 32 L 40 32 Z" fill="#ffffff" opacity="0.6" />
+          <path d="M 47 48 Q 44 40 40 40 Q 44 40 47 46" stroke="#facc15" strokeWidth="2" fill="none" />
+          <path d="M 47 48 Q 50 38 54 39 Q 50 40 47 46" stroke="#facc15" strokeWidth="2" fill="none" />
+          <text x="15" y="37" fill="#0f172a" fontWeight="800" fontSize="16" fontFamily="sans-serif">🎒 초등학교</text>
+        </svg>
+      </div>
+    );
+  }
+  if (school === "middle") {
+    return (
+      <div style={{ width: "100%", height: 60, borderRadius: 12, overflow: "hidden", position: "relative", marginBottom: 12, background: "linear-gradient(to right, #6366f1, #a5b4fc)" }}>
+        <svg width="100%" height="100%" viewBox="0 0 400 60" preserveAspectRatio="none" style={{ position: "absolute", bottom: 0, left: 0 }}>
+          <path d="M 300 20 Q 310 10 320 20 Q 330 10 340 20 Q 350 20 340 27 L 300 27 Z" fill="#ffffff" opacity="0.5" />
+          <rect x="20" y="30" width="80" height="30" fill="#cbd5e1" opacity="0.4" />
+          <rect x="80" y="15" width="30" height="45" fill="#94a3b8" opacity="0.5" />
+          <path d="M 80 15 L 95 2 L 110 15 Z" fill="#ef4444" />
+          <circle cx="95" cy="10" r="3" fill="#ffffff" />
+          <rect x="0" y="52" width="420" height="8" fill="#475569" />
+          <text x="15" y="37" fill="#ffffff" fontWeight="800" fontSize="16" fontFamily="sans-serif">📘 중학교</text>
+        </svg>
+      </div>
+    );
+  }
+  return (
+    <div style={{ width: "100%", height: 60, borderRadius: 12, overflow: "hidden", position: "relative", marginBottom: 12, background: "linear-gradient(to right, #1e1b4b, #312e81)" }}>
+      <svg width="100%" height="100%" viewBox="0 0 400 60" preserveAspectRatio="none" style={{ position: "absolute", bottom: 0, left: 0 }}>
+        <circle cx="40" cy="15" r="1" fill="#ffffff" />
+        <circle cx="120" cy="10" r="1.5" fill="#fef08a" />
+        <circle cx="200" cy="22" r="1" fill="#ffffff" />
+        <circle cx="340" cy="12" r="1.2" fill="#ffffff" opacity="0.8" />
+        <circle cx="380" cy="25" r="1" fill="#ffffff" />
+        <path d="M 280 8 Q 288 8 290 15 Q 284 19 278 14 Q 275 8 280 8 Z" fill="#fbbf24" opacity="0.9" />
+        <rect x="50" y="25" width="90" height="35" fill="#475569" opacity="0.4" />
+        <rect x="110" y="18" width="50" height="42" fill="#334155" opacity="0.6" />
+        <rect x="120" y="25" width="6" height="6" fill="#fef08a" opacity="0.7" />
+        <rect x="135" y="25" width="6" height="6" fill="#fef08a" opacity="0.7" />
+        <rect x="120" y="37" width="6" height="6" fill="#ffffff" opacity="0.5" />
+        <rect x="135" y="37" width="6" height="6" fill="#fef08a" opacity="0.7" />
+        <circle cx="200" cy="45" r="12" fill="#ec4899" opacity="0.4" />
+        <circle cx="212" cy="48" r="8" fill="#f43f5e" opacity="0.3" />
+        <rect x="0" y="54" width="420" height="6" fill="#1e293b" />
+        <text x="15" y="37" fill="#fef08a" fontWeight="800" fontSize="16" fontFamily="sans-serif">🎓 고등학교</text>
+      </svg>
+    </div>
+  );
+};
 
 /* ═══════════════════════════════════════════
    SCREENS
@@ -358,6 +701,7 @@ function ScheduleScreen({ G, turnInfo, onConfirm }) {
   const [cls, setCls] = useState(null);
   const [club, setClub] = useState(null);
   const [vac, setVac] = useState(null);
+  const [activeTab, setActiveTab] = useState("schedule"); // "schedule" | "profile"
   const mult = G.mode === "fast" ? 1.8 : 1;
 
   const availClasses = CLASSES.filter(c => !c.school || (c.school==="middle" && turnInfo.year>=7));
@@ -373,76 +717,167 @@ function ScheduleScreen({ G, turnInfo, onConfirm }) {
     return <span style={{fontSize:11,color:P.muted}}>{parts.join(" ")}</span>;
   };
 
+  const peerQuotes = getPeerEvaluations(G);
+  const careerProgress = calcJobProgress(G.stats);
+
   return (
     <div>
-      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
-        <div>
-          <div style={{ fontSize:13, color:P.muted }}>{turnInfo.label} {turnInfo.grade}학년</div>
-          <div style={{ fontSize:20, fontWeight:700, color:P.gold }}>{turnInfo.semLabel}</div>
+      {/* School Background Decoration */}
+      <SchoolBgDecor school={turnInfo.school} />
+
+      {/* Main Game Header Card */}
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16, background:"rgba(255,255,255,.02)", padding:"12px 16px", borderRadius:12, border:`1px solid ${P.border}` }}>
+        <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+          <StudentAvatar stats={G.stats} stress={G.stress} school={turnInfo.school} width={48} height={48} />
+          <div>
+            <div style={{ fontSize:12, color:P.muted }}>{turnInfo.label} {turnInfo.grade}학년 · {turnInfo.semLabel}</div>
+            <div style={{ fontSize:15, fontWeight:700, color:P.gold }}>{G.name}</div>
+          </div>
         </div>
         <div style={{ textAlign:"right" }}>
-          <div style={{ fontSize:13, color:P.muted }}>턴 {G.turn+1}/{G.mode==="fast"?24:48}</div>
-          <div style={{ fontSize:13, color:P.accent }}>{G.name}</div>
+          <div style={{ fontSize:12, color:P.muted }}>턴 {G.turn+1}/{G.mode==="fast"?24:48}</div>
+          <div style={{ fontSize:12, fontWeight:700, color:P.accent }}>{G.mode === "fast" ? "⚡ 빠른 모드" : "📚 기본 모드"}</div>
         </div>
       </div>
 
-      <div style={{ marginBottom:16 }}>
-        <StatBars stats={G.stats} stress={G.stress} compact />
+      {/* Tab Menu */}
+      <div style={{ display:"flex", gap:8, marginBottom:16 }}>
+        <button onClick={() => setActiveTab("schedule")} style={{
+          flex: 1, padding: "10px 0", borderRadius: 10, border: "none",
+          background: activeTab === "schedule" ? P.accent + "22" : "rgba(255,255,255,0.02)",
+          color: activeTab === "schedule" ? P.accent : P.muted,
+          fontWeight: 700, fontSize: 13, cursor: "pointer",
+          borderBottom: `2px solid ${activeTab === "schedule" ? P.accent : "transparent"}`,
+          transition: "all .2s"
+        }}>📅 활동 계획</button>
+        
+        <button onClick={() => setActiveTab("profile")} style={{
+          flex: 1, padding: "10px 0", borderRadius: 10, border: "none",
+          background: activeTab === "profile" ? P.accent + "22" : "rgba(255,255,255,0.02)",
+          color: activeTab === "profile" ? P.accent : P.muted,
+          fontWeight: 700, fontSize: 13, cursor: "pointer",
+          borderBottom: `2px solid ${activeTab === "profile" ? P.accent : "transparent"}`,
+          transition: "all .2s"
+        }}>👥 주변인 평가</button>
       </div>
 
-      {!isVac ? (
-        <>
-          <h3 style={{ fontSize:15, color:P.accent, margin:"16px 0 8px" }}>📚 수업 선택</h3>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6, marginBottom:12 }}>
-            {availClasses.map(c=>(
-              <GlassCard key={c.id} selected={cls===c.id} accent={P.accent} onClick={()=>setCls(c.id)}>
-                <div style={{ fontWeight:600, fontSize:13, color:cls===c.id?P.accent:P.text }}>{c.name}</div>
-                {renderEff(c.eff)}
-              </GlassCard>
-            ))}
+      {activeTab === "schedule" ? (
+        <div style={{ animation: "fadeIn .3s ease" }}>
+          <div style={{ marginBottom:16 }}>
+            <StatBars stats={G.stats} stress={G.stress} compact />
           </div>
-          <h3 style={{ fontSize:15, color:P.green, margin:"16px 0 8px" }}>🎯 방과후 활동</h3>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6, marginBottom:16 }}>
-            {availClubs.map(c=>(
-              <GlassCard key={c.id} selected={club===c.id} accent={P.green} onClick={()=>setClub(c.id)}>
-                <div style={{ fontWeight:600, fontSize:13, color:club===c.id?P.green:P.text }}>{c.name}</div>
-                {renderEff(c.eff)}
-              </GlassCard>
-            ))}
-          </div>
-          <Btn onClick={()=>onConfirm(cls,club,null)} disabled={!cls||!club} full color={P.accent}>
-            ✅ 학기 시작!
-          </Btn>
-        </>
+
+          {!isVac ? (
+            <>
+              <h3 style={{ fontSize:14, color:P.accent, margin:"16px 0 8px" }}>📚 수업 선택</h3>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6, marginBottom:12 }}>
+                {availClasses.map(c=>(
+                  <GlassCard key={c.id} selected={cls===c.id} accent={P.accent} onClick={()=>setCls(c.id)}>
+                    <div style={{ fontWeight:600, fontSize:13, color:cls===c.id?P.accent:P.text }}>{c.name}</div>
+                    {renderEff(c.eff)}
+                  </GlassCard>
+                ))}
+              </div>
+              <h3 style={{ fontSize:14, color:P.green, margin:"16px 0 8px" }}>🎯 방과후 활동</h3>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6, marginBottom:16 }}>
+                {availClubs.map(c=>(
+                  <GlassCard key={c.id} selected={club===c.id} accent={P.green} onClick={()=>setClub(c.id)}>
+                    <div style={{ fontWeight:600, fontSize:13, color:club===c.id?P.green:P.text }}>{c.name}</div>
+                    {renderEff(c.eff)}
+                  </GlassCard>
+                ))}
+              </div>
+              <Btn onClick={()=>onConfirm(cls,club,null)} disabled={!cls||!club} full color={P.accent}>
+                ✅ 학기 시작!
+              </Btn>
+            </>
+          ) : (
+            <>
+              <h3 style={{ fontSize:14, color:P.gold, margin:"16px 0 8px" }}>🌴 방학 활동 선택</h3>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6, marginBottom:16 }}>
+                {availVacs.map(v=>(
+                  <GlassCard key={v.id} selected={vac===v.id} accent={P.gold} onClick={()=>setVac(v.id)}>
+                    <div style={{ fontWeight:600, fontSize:13, color:vac===v.id?P.gold:P.text }}>{v.name}</div>
+                    {renderEff(v.eff, v.stress||0)}
+                  </GlassCard>
+                ))}
+              </div>
+              <Btn onClick={()=>onConfirm(null,null,vac)} disabled={!vac} full color={P.gold}>
+                ✅ 방학 시작!
+              </Btn>
+            </>
+          )}
+        </div>
       ) : (
-        <>
-          <h3 style={{ fontSize:15, color:P.gold, margin:"16px 0 8px" }}>🌴 방학 활동 선택</h3>
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6, marginBottom:16 }}>
-            {availVacs.map(v=>(
-              <GlassCard key={v.id} selected={vac===v.id} accent={P.gold} onClick={()=>setVac(v.id)}>
-                <div style={{ fontWeight:600, fontSize:13, color:vac===v.id?P.gold:P.text }}>{v.name}</div>
-                {renderEff(v.eff, v.stress||0)}
+        <div style={{ animation: "fadeIn .3s ease" }}>
+          {/* Large Avatar view */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "16px 0", background: "rgba(255,255,255,.02)", borderRadius: 12, border: `1px solid ${P.border}`, marginBottom: 16 }}>
+            <StudentAvatar stats={G.stats} stress={G.stress} school={turnInfo.school} width={100} height={100} />
+            <div style={{ fontSize: 18, fontWeight: 800, color: P.gold }}>{G.name}</div>
+            <div style={{ fontSize: 13, background: P.card, padding: "4px 12px", borderRadius: 20, border: `1px solid ${P.border}`, color: G.stress >= 80 ? P.red : P.accent, fontWeight: 700 }}>
+              {getCurrentStateLabel(G)}
+            </div>
+          </div>
+
+          {/* Peer Quotes */}
+          <h3 style={{ fontSize:14, color:P.accent, margin:"16px 0 8px" }}>💬 주변인들의 한마디</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+            {Object.entries(peerQuotes).map(([key, quote]) => {
+              const titles = { teacher: "👩‍🏫 담임 선생님", parent: "🏠 부모님", friend: "🎒 단짝 친구", rumor: "📢 학교 소문" };
+              const borderColors = { teacher: P.accent, parent: P.pink, friend: P.green, rumor: P.gold };
+              return (
+                <GlassCard key={key} accent={borderColors[key]} style={{ padding: "12px 14px" }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: borderColors[key], marginBottom: 4 }}>{titles[key]}</div>
+                  <div style={{ fontSize: 13, color: P.text, lineHeight: 1.5 }}>"{quote}"</div>
+                </GlassCard>
+              );
+            })}
+          </div>
+
+          {/* Career recommendations */}
+          <h3 style={{ fontSize:14, color:P.gold, margin:"16px 0 8px" }}>🎯 장래 희망 분석 (발전 가능성)</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+            {careerProgress.map((p, idx) => (
+              <GlassCard key={idx} accent={P.gold} style={{ padding: "12px 14px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: P.text }}>{p.emoji} {p.name} <span style={{ fontSize:10, color:P.muted, fontWeight:400 }}>({p.cat})</span></span>
+                  <span style={{ fontSize: 12, fontWeight: 700, color: P.gold }}>적합도 {p.percentage}%</span>
+                </div>
+                <div style={{ height: 6, background: "rgba(255,255,255,.08)", borderRadius: 3, overflow: "hidden", marginBottom: 8 }}>
+                  <div style={{ width: `${p.percentage}%`, height: "100%", background: P.gold, borderRadius: 3 }} />
+                </div>
+                <div style={{ fontSize: 11, color: P.muted, lineHeight: 1.4 }}>
+                  {p.missing.length > 0 ? (
+                    <>
+                      💡 성장 과제: {p.missing.map(m => `${STAT_META[m.key].icon}${STAT_META[m.key].name} +${m.amount}`).join(", ")}
+                    </>
+                  ) : (
+                    "✨ 이미 장래 희망 요구 조건을 완벽히 달성했습니다!"
+                  )}
+                </div>
               </GlassCard>
             ))}
           </div>
-          <Btn onClick={()=>onConfirm(null,null,vac)} disabled={!vac} full color={P.gold}>
-            ✅ 방학 시작!
-          </Btn>
-        </>
+        </div>
       )}
     </div>
   );
 }
 
-function ResultScreen({ result, turnInfo, onContinue }) {
+function ResultScreen({ result, turnInfo, G, onContinue }) {
   const { changes, rollType, rollMsg, activityMsgs, conditionMsg } = result;
   const rollColors = { critical: P.gold, normal: P.accent, fail: P.orange };
   const rollLabels = { critical: "🌟 대성공!", normal: "📊 결과", fail: "😅 부진..." };
 
   return (
-    <div style={{ textAlign:"center", paddingTop:30 }}>
-      <div style={{ fontSize:15, color:P.muted, marginBottom:8 }}>{turnInfo.label} {turnInfo.grade}학년 · {turnInfo.semLabel}</div>
+    <div style={{ textAlign:"center", paddingTop:20 }}>
+      <div style={{ fontSize:14, color:P.muted, marginBottom:8 }}>{turnInfo.label} {turnInfo.grade}학년 · {turnInfo.semLabel}</div>
       <h2 style={{ fontSize:20, color:rollColors[rollType], margin:"0 0 12px", animation:rollType==="critical"?"pop .5s ease":undefined }}>{rollLabels[rollType]}</h2>
+
+      {/* Dynamic Avatar display on turn result */}
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+        <StudentAvatar stats={G.stats} stress={G.stress} school={turnInfo.school} width={90} height={90} />
+      </div>
 
       {rollMsg && (
         <div style={{ padding:"10px 16px", background:rollType==="critical"?P.gold+"18":P.orange+"18", borderRadius:10, border:`1px solid ${rollColors[rollType]}44`, marginBottom:12, fontSize:14, color:rollColors[rollType], fontWeight:600, animation:"fadeIn .5s ease" }}>
@@ -530,14 +965,17 @@ function EndingScreen({ G, job, titles, collection, onTitle }) {
   }, [phase]);
 
   return (
-    <div style={{ textAlign:"center", paddingTop:30 }}>
+    <div style={{ textAlign:"center", paddingTop:20 }}>
       {phase === 0 && (
         <div><div style={{ fontSize:48, marginBottom:16 }}>🎓</div>
         <h2 style={{ fontSize:22, color:P.muted }}>졸업 후 10년...</h2></div>
       )}
       {phase >= 1 && (
         <div style={{ animation:"fadeIn .8s ease" }}>
-          <div style={{ fontSize:64, marginBottom:12 }}>{job.emoji}</div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12, marginBottom: 12 }}>
+            <div style={{ fontSize:56 }}>{job.emoji}</div>
+            <StudentAvatar stats={G.stats} stress={G.stress} school="high" width={90} height={90} />
+          </div>
           <h2 style={{ fontSize:26, color:P.gold, margin:"0 0 4px" }}>{G.name}</h2>
           <p style={{ fontSize:20, color:P.accent, fontWeight:700, margin:"0 0 20px" }}>{job.name}{job.name==="프리랜서"?" (아직 꿈을 찾는 중...)":""}</p>
         </div>
@@ -825,7 +1263,7 @@ export default function App() {
       {screen === "title" && <TitleScreen onNew={handleNew} saves={saves} onLoad={handleLoad} onCollection={()=>setScreen("collection")} />}
       {screen === "setup" && <SetupScreen onStart={handleStart} />}
       {screen === "schedule" && G && <ScheduleScreen G={G} turnInfo={turnInfo} onConfirm={handleConfirm} />}
-      {screen === "result" && <ResultScreen result={turnResult} turnInfo={turnInfo} onContinue={handleResultContinue} />}
+      {screen === "result" && G && <ResultScreen result={turnResult} turnInfo={turnInfo} G={G} onContinue={handleResultContinue} />}
       {screen === "event" && currentEvent && <EventScreen event={currentEvent} onChoice={handleEventChoice} mult={mult} />}
       {screen === "burnout" && G && <BurnoutScreen name={G.name} onContinue={handleBurnout} />}
       {screen === "milestone" && G && <MilestoneScreen school={milestoneSchool} name={G.name} stats={G.stats} onContinue={handleMilestoneContinue} />}
