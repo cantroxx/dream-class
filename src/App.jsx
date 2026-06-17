@@ -20,42 +20,42 @@ const SK = Object.keys(STAT_META);
 const initStats = ()=>Object.fromEntries(SK.map(k=>[k,10]));
 
 const CLASSES = [
-  { id:"c1", name:"국어와 글쓰기",  eff:{academic:3,emotion:1}, msgs:["독서 감상문에서 선생님이 칭찬해주셨어요!","오늘 토론에서 멋진 발표를 했어요.","새로운 책을 읽고 세상이 넓어진 기분이에요."] },
-  { id:"c2", name:"창의 수학 교실",  eff:{academic:3,inquiry:2}, msgs:["어려운 문제를 풀었더니 뿌듯해요!","수학 공식이 머릿속에서 딱딱 맞아떨어져요.","오늘 배운 개념이 신기하고 재미있었어요."] },
-  { id:"c3", name:"어린이 과학 실험실",  eff:{inquiry:3,tech:1}, msgs:["실험 결과가 예상과 딱 맞아서 신났어요!","현미경으로 새로운 세계를 봤어요.","가설을 세우고 검증하는 과정이 짜릿해요."] },
+  { id:"c1", name:"국어와 글쓰기",  eff:{academic:3,emotion:1,physical:-1}, msgs:["독서 감상문에서 선생님이 칭찬해주셨어요!","오늘 토론에서 멋진 발표를 했어요.","새로운 책을 읽고 세상이 넓어진 기분이에요."] },
+  { id:"c2", name:"창의 수학 교실",  eff:{academic:3,inquiry:2,social:-1}, msgs:["어려운 문제를 풀었더니 뿌듯해요!","수학 공식이 머릿속에서 딱딱 맞아떨어져요.","오늘 배운 개념이 신기하고 재미있었어요."] },
+  { id:"c3", name:"어린이 과학 실험실",  eff:{inquiry:3,tech:1,social:-1}, msgs:["실험 결과가 예상과 딱 맞아서 신났어요!","현미경으로 새로운 세계를 봤어요.","가설을 세우고 검증하는 과정이 짜릿해요."] },
   { id:"c4", name:"사회 탐구",  eff:{academic:2,social:2}, msgs:["역사 속 인물의 이야기에 빠져들었어요.","사회 현상을 분석하는 눈이 생긴 것 같아요.","모둠 토론에서 다양한 의견을 들었어요."] },
   { id:"c5", name:"영어 회화",  eff:{academic:2,social:1}, msgs:["외국인 선생님과 자연스럽게 대화했어요!","영어 팝송 가사가 들리기 시작했어요.","영어로 자기소개를 멋지게 해냈어요."] },
-  { id:"c6", name:"블록 코딩(엔트리)",  eff:{tech:3,inquiry:1}, school:"middle", msgs:["내가 만든 프로그램이 드디어 동작해요!","버그를 찾아서 고치는 게 퍼즐 같아요.","알고리즘이 점점 이해되기 시작했어요."] },
-  { id:"c7", name:"뉴스포츠와 뜀틀",  eff:{physical:4,grit:1}, msgs:["체력 측정에서 기록이 쑥 올랐어요!","운동 후 땀 흘리니까 기분이 상쾌해요.","친구들과 팀으로 운동하니 더 재미있어요."] },
-  { id:"c8", name:"음악과 미술 시간",  eff:{emotion:2,creativity:2,charm:1}, msgs:["내가 그린 그림을 친구들이 좋아해줬어요!","새로운 악기 연주법을 배웠어요.","예술 작품을 감상하며 감동받았어요."] },
-  { id:"c9", name:"생태와 환경 수업",  eff:{inquiry:3,emotion:1}, msgs:["학교 텃밭에서 방울토마토가 자라는 걸 보니 너무 신기해요!","분리배출을 열심히 해서 지구를 지키는 파수꾼이 될래요."] },
+  { id:"c6", name:"블록 코딩(엔트리)",  eff:{tech:3,inquiry:1,emotion:-1}, school:"middle", msgs:["내가 만든 프로그램이 드디어 동작해요!","버그를 찾아서 고치는 게 퍼즐 같아요.","알고리즘이 점점 이해되기 시작했어요."] },
+  { id:"c7", name:"뉴스포츠와 뜀틀",  eff:{physical:4,grit:1,academic:-1}, msgs:["체력 측정에서 기록이 쑥 올랐어요!","운동 후 땀 흘리니까 기분이 상쾌해요.","친구들과 팀으로 운동하니 더 재미있어요."] },
+  { id:"c8", name:"음악과 미술 시간",  eff:{emotion:2,creativity:2,charm:1,tech:-1}, msgs:["내가 그린 그림을 친구들이 좋아해줬어요!","새로운 악기 연주법을 배웠어요.","예술 작품을 감상하며 감동받았어요."] },
+  { id:"c9", name:"생태와 환경 수업",  eff:{inquiry:3,emotion:1,social:-1}, msgs:["학교 텃밭에서 방울토마토가 자라는 걸 보니 너무 신기해요!","분리배출을 열심히 해서 지구를 지키는 파수꾼이 될래요."] },
   { id:"c10", name:"어린이 역사 탐험",  eff:{academic:2,creativity:1,charm:1}, msgs:["우리 고장의 옛날 이야기를 배우는 게 삼국지보다 재밌어요!","과거로 시간 여행을 다녀온 기분이에요."] },
 ];
 
 const CLUBS = [
-  { id:"cl1",  name:"축구부",     eff:{physical:4,social:2,grit:1}, msgs:["오늘 연습 경기에서 멋진 골을 넣었어요!","체력이 눈에 띄게 좋아지고 있어요.","팀워크의 중요성을 느낀 하루였어요."] },
-  { id:"cl2",  name:"미술부",     eff:{creativity:4,emotion:2}, msgs:["수채화 기법을 새로 배웠어요!","전시회 출품작을 완성했어요.","색감에 대한 감각이 살아나는 것 같아요."] },
-  { id:"cl3",  name:"과학반",     eff:{inquiry:4,academic:1}, msgs:["자유 주제 실험에서 흥미로운 결과를 얻었어요!","과학 잡지를 읽으며 새로운 아이디어가 떠올랐어요.","선배가 연구 방법을 친절하게 알려줬어요."] },
-  { id:"cl4",  name:"밴드부",     eff:{emotion:4,social:2}, msgs:["합주가 점점 맞아가고 있어요!","새로운 곡 연습을 시작했어요.","공연 준비가 설레고 떨려요."] },
-  { id:"cl5",  name:"레고 로봇 과학부", eff:{tech:4,inquiry:2}, school:"middle", msgs:["로봇이 드디어 정해진 경로를 따라 움직여요!","센서 프로그래밍이 점점 재미있어져요.","대회 출전을 목표로 열심히 준비 중이에요."] },
+  { id:"cl1",  name:"축구부",     eff:{physical:4,social:2,grit:1,academic:-2}, msgs:["오늘 연습 경기에서 멋진 골을 넣었어요!","체력이 눈에 띄게 좋아지고 있어요.","팀워크의 중요성을 느낀 하루였어요."] },
+  { id:"cl2",  name:"미술부",     eff:{creativity:4,emotion:2,tech:-2}, msgs:["수채화 기법을 새로 배웠어요!","전시회 출품작을 완성했어요.","색감에 대한 감각이 살아나는 것 같아요."] },
+  { id:"cl3",  name:"과학반",     eff:{inquiry:4,academic:1,social:-2}, msgs:["자유 주제 실험에서 흥미로운 결과를 얻었어요!","과학 잡지를 읽으며 새로운 아이디어가 떠올랐어요.","선배가 연구 방법을 친절하게 알려줬어요."] },
+  { id:"cl4",  name:"밴드부",     eff:{emotion:4,social:2,academic:-1}, msgs:["합주가 점점 맞아가고 있어요!","새로운 곡 연습을 시작했어요.","공연 준비가 설레고 떨려요."] },
+  { id:"cl5",  name:"레고 로봇 과학부", eff:{tech:4,inquiry:2,emotion:-2}, school:"middle", msgs:["로봇이 드디어 정해진 경로를 따라 움직여요!","센서 프로그래밍이 점점 재미있어져요.","대회 출전을 목표로 열심히 준비 중이에요."] },
   { id:"cl6",  name:"독서토론반", eff:{academic:2,social:3}, msgs:["이번 달 추천 도서가 정말 재미있었어요!","토론에서 논리적으로 반박하는 법을 배웠어요.","다양한 관점으로 책을 읽는 눈이 생겼어요."] },
-  { id:"cl7",  name:"전교 어린이회",     eff:{social:4,grit:2}, msgs:["학교 행사 기획안이 통과됐어요!","학생들의 의견을 모아 건의서를 제출했어요.","리더십에 대해 많이 배우는 시간이었어요."] },
-  { id:"cl8",  name:"꼬마 요리사반",     eff:{creativity:3,emotion:2}, msgs:["오늘 만든 요리를 친구들이 맛있다고 했어요!","새로운 레시피에 도전해서 성공했어요.","재료를 창의적으로 조합하는 게 재미있어요."] },
+  { id:"cl7",  name:"전교 어린이회",     eff:{social:4,grit:2,inquiry:-1}, msgs:["학교 행사 기획안이 통과됐어요!","학생들의 의견을 모아 건의서를 제출했어요.","리더십에 대해 많이 배우는 시간이었어요."] },
+  { id:"cl8",  name:"꼬마 요리사반",     eff:{creativity:3,emotion:2,tech:-1}, msgs:["오늘 만든 요리를 친구들이 맛있다고 했어요!","새로운 레시피에 도전해서 성공했어요.","재료를 창의적으로 조합하는 게 재미있어요."] },
   { id:"cl9",  name:"방송반",     eff:{tech:2,social:2,charm:1,creativity:1}, msgs:["점심시간 교내 방송을 멋지게 진행했어요!","영상 편집 기술이 늘고 있어요.","인터뷰 촬영을 하면서 소통 능력이 늘었어요."] },
-  { id:"cl10", name:"방송 댄스 동아리",     eff:{physical:2,emotion:2,charm:2}, msgs:["새로운 안무를 완벽하게 소화했어요!","거울 앞에서 연습하니 동작이 깔끔해졌어요.","공연 무대에 대한 기대감이 커져요."] },
-  { id:"cl11", name:"바둑과 보드게임반",     eff:{grit:3,creativity:2,inquiry:1}, msgs:["상대방의 수를 예측하며 바둑돌을 놓을 때 엄청 짜릿해요!","보드게임 규칙을 지키며 포기하지 않고 끝까지 이겼어요!"] },
-  { id:"cl12", name:"어린이 연극 교실",     eff:{emotion:2,charm:3,social:1}, msgs:["연극 무대에서 다른 주인공의 마음이 되어 대사를 해봤어요!","친구들과 몸으로 감정을 표현하는 게 정말 즐거워요!"] },
+  { id:"cl10", name:"방송 댄스 동아리",     eff:{physical:2,emotion:2,charm:2,academic:-1}, msgs:["새로운 안무를 완벽하게 소화했어요!","거울 앞에서 연습하니 동작이 깔끔해졌어요.","공연 무대에 대한 기대감이 커져요."] },
+  { id:"cl11", name:"바둑과 보드게임반",     eff:{grit:3,creativity:2,inquiry:1,physical:-1}, msgs:["상대방의 수를 예측하며 바둑돌을 놓을 때 엄청 짜릿해요!","보드게임 규칙을 지키며 포기하지 않고 끝까지 이겼어요!"] },
+  { id:"cl12", name:"어린이 연극 교실",     eff:{emotion:2,charm:3,social:1,tech:-1}, msgs:["연극 무대에서 다른 주인공의 마음이 되어 대사를 해봤어요!","친구들과 몸으로 감정을 표현하는 게 정말 즐거워요!"] },
 ];
 
 const VACATIONS = [
-  { id:"v1", name:"방학 학원 특강",   eff:{academic:5}, stress:3, msgs:["문제집 한 권을 다 풀었어요!","선생님이 실력이 많이 늘었다고 했어요.","열심히 공부한 보람이 느껴져요."] },
-  { id:"v2", name:"스포츠 캠프", eff:{physical:5,grit:2}, msgs:["캠프에서 새로운 운동 친구를 사귀었어요!","아침부터 저녁까지 운동하니 체력이 쑥 올랐어요.","힘들었지만 포기하지 않아서 뿌듯해요."] },
-  { id:"v3", name:"해외 가족 여행",   eff:{social:4,creativity:2}, msgs:["다른 나라의 문화를 직접 체험하니 신기했어요!","외국 친구와 소통하면서 시야가 넓어졌어요.","새로운 음식과 풍경에 감동받았어요."] },
-  { id:"v4", name:"하루 종일 자유 시간",   eff:{creativity:1}, stress:-5, msgs:["마음껏 쉬니까 에너지가 충전됐어요!","하고 싶은 것을 마음대로 하니 행복해요.","여유로운 시간이 창의력의 원천이에요."] },
+  { id:"v1", name:"방학 학원 특강",   eff:{academic:5,physical:-2,social:-1}, stress:3, msgs:["문제집 한 권을 다 풀었어요!","선생님이 실력이 많이 늘었다고 했어요.","열심히 공부한 보람이 느껴져요."] },
+  { id:"v2", name:"스포츠 캠프", eff:{physical:5,grit:2,academic:-2,tech:-1}, msgs:["캠프에서 새로운 운동 친구를 사귀었어요!","아침부터 저녁까지 운동하니 체력이 쑥 올랐어요.","힘들었지만 포기하지 않아서 뿌듯해요."] },
+  { id:"v3", name:"해외 가족 여행",   eff:{social:4,creativity:2,academic:-1}, msgs:["다른 나라의 문화를 직접 체험하니 신기했어요!","외국 친구와 소통하면서 시야가 넓어졌어요.","새로운 음식과 풍경에 감동받았어요."] },
+  { id:"v4", name:"하루 종일 자유 시간",   eff:{creativity:1,grit:-2}, stress:-5, msgs:["마음껏 쉬니까 에너지가 충전됐어요!","하고 싶은 것을 마음대로 하니 행복해요.","여유로운 시간이 창의력의 원천이에요."] },
   { id:"v5", name:"키자니아 직업 체험",   eff:{inquiry:2,social:2,charm:1}, msgs:["다양한 직업의 세계를 엿볼 수 있었어요!","꿈에 한 발짝 다가간 기분이에요.","현장에서 일하는 분들의 이야기가 인상적이었어요."] },
   { id:"v6", name:"봉사활동",    eff:{social:3,emotion:2,grit:1}, msgs:["도움이 필요한 분들에게 보탬이 된 것 같아요.","봉사를 하면서 오히려 제가 더 많이 배웠어요.","따뜻한 마음을 나누는 시간이었어요."] },
-  { id:"v7", name:"코딩 캠프",   eff:{tech:5,grit:1}, school:"middle", msgs:["해커톤에서 팀 프로젝트를 완성했어요!","새로운 프로그래밍 언어를 배웠어요.","멘토 개발자의 조언이 정말 도움됐어요."] },
-  { id:"v8", name:"미술관/박물관 나들이", eff:{creativity:5,emotion:2}, msgs:["전문 작가에게 직접 지도받았어요!","영감이 샘솟는 시간이었어요.","나만의 작품을 완성해서 전시했어요."] },
+  { id:"v7", name:"코딩 캠프",   eff:{tech:5,grit:1,emotion:-2,physical:-1}, school:"middle", msgs:["해커톤에서 팀 프로젝트를 완성했어요!","새로운 프로그래밍 언어를 배웠어요.","멘토 개발자의 조언이 정말 도움됐어요."] },
+  { id:"v8", name:"미술관/박물관 나들이", eff:{creativity:5,emotion:2,tech:-2,grit:-1}, msgs:["전문 작가에게 직접 지도받았어요!","영감이 샘솟는 시간이었어요.","나만의 작품을 완성해서 전시했어요."] },
 ];
 const EVENTS = [
   { id:"e1", school:"elementary", title:"전학생이 왔다!", desc:"새 친구가 전학을 왔어요. 어떻게 할까요?",
@@ -145,6 +145,10 @@ const JOBS = [
   { name:"기업가",emoji:"🚀",cat:"안정",req:{social:75,grit:70,creativity:50} },
   { name:"간호사",emoji:"💉",cat:"안정",req:{academic:55,emotion:60,physical:50,social:45} },
   { name:"음식 연구원",emoji:"🧪",cat:"안정",req:{inquiry:60,creativity:55,emotion:45} },
+  { name:"우주 비행사",emoji:"🧑‍🚀",cat:"히든",req:{inquiry:200,physical:200,grit:150} },
+  { name:"글로벌 팝스타",emoji:"🌟",cat:"히든",req:{charm:220,emotion:180,social:150} },
+  { name:"초지능 AI 개발자",emoji:"🌌",cat:"히든",req:{tech:240,inquiry:200,academic:180} },
+  { name:"노벨상 수상자",emoji:"🏆",cat:"히든",req:{inquiry:250,academic:220} },
 ];
 
 const TITLES = [
@@ -166,6 +170,8 @@ const TITLES = [
   { name:"골드 디스크 아티스트",emoji:"💿",check:(s)=>s.emotion>=90&&s.charm>=80 },
   { name:"스트리트 댄스 제왕",emoji:"👑",check:(s)=>s.physical>=85&&s.charm>=75 },
   { name:"반짝반짝 끼쟁이 대장",emoji:"✨",check:(s)=>s.charm>=95 },
+  { name:"스탯 초월자",emoji:"🏆",check:(s)=>SK.some(k=>s[k]>=250) },
+  { name:"초월적인 조화",emoji:"☯️",check:(s)=>SK.every(k=>s[k]>=150) },
 ];
 
 const CRITICAL_MSGS = [
@@ -361,7 +367,7 @@ function calcTitles(stats, flags) {
   return TITLES.filter(t => { try { return t.check(stats, flags); } catch { return false; } });
 }
 
-function clamp(v, lo=0, hi=100) { return Math.max(lo, Math.min(hi, v)); }
+function clamp(v, lo=0, hi=300) { return Math.max(lo, Math.min(hi, v)); }
 
 function applyEffects(stats, stress, eff, stressD=0, mult=1) {
   const ns = { ...stats };
@@ -449,7 +455,7 @@ const StatBars = ({ stats, stress, compact }) => {
               <span style={{color:P.muted}}>{val}</span>
             </div>
             <div style={{ height:6, background:"rgba(255,255,255,.08)", borderRadius:3, overflow:"hidden", marginBottom: isExp ? 6 : 0 }}>
-              <div style={{ width:`${val}%`, height:"100%", background:STAT_META[k].color, borderRadius:3, transition:"width .5s" }} />
+              <div style={{ width:`${(val / 300) * 100}%`, height:"100%", background:STAT_META[k].color, borderRadius:3, transition:"width .5s" }} />
             </div>
             {isExp && STAT_DESCS[k] && (
               <div style={{
@@ -495,6 +501,10 @@ function StudentAvatar({ gender = "male", stats, stress, school, width = 120, he
   const isHighTech = stats.tech >= 50;
   const isHighArt = stats.creativity >= 50 || stats.emotion >= 50;
   const isHighGrit = stats.grit >= 50;
+
+  let glassesY = 5;
+  if (school === "middle") glassesY = 1;
+  else if (school === "high") glassesY = 0;
 
   // Determine image URL - แยกเป็น 3 ช่วงอารมณ์: happy (stress < 30), normal (30 <= stress < 60), sad (stress >= 60)
   let expr = "normal";
@@ -554,12 +564,12 @@ function StudentAvatar({ gender = "male", stats, stress, school, width = 120, he
 
           {/* B. Smart Glasses (Academic / Inquiry) */}
           {isHighAcademic && (
-            <g stroke="#334155" strokeWidth="3.5" fill="none" strokeLinecap="round" transform="translate(0, 5)">
+            <g stroke="#334155" strokeWidth="3.5" fill="none" strokeLinecap="round" transform={`translate(0, ${glassesY})`}>
               <circle cx="46" cy="58" r="11" fill="rgba(255,255,255,0.15)" stroke="#334155" />
               <circle cx="74" cy="58" r="11" fill="rgba(255,255,255,0.15)" stroke="#334155" />
               <path d="M 57 58 L 63 58" />
-              <path d="M 35 58 Q 30 54 26 50" />
-              <path d="M 85 58 Q 90 54 94 50" />
+              <path d="M 35 58 Q 32 56 29 53" />
+              <path d="M 85 58 Q 88 56 91 53" />
             </g>
           )}
 
@@ -1165,7 +1175,7 @@ export default function App() {
       const club = CLUBS.find(c=>c.id===clubId);
       const r = applyEffects(ns, nStress, club.eff, 0, mult * variance);
       ns = r.stats; nStress = r.stress;
-      nStress = clamp(nStress + 1);
+      nStress = clamp(nStress + 1, 0, 100);
       if (club.msgs) activityMsgs.push(club.msgs[Math.floor(Math.random() * club.msgs.length)]);
     }
     if (vacId) {
@@ -1252,7 +1262,7 @@ export default function App() {
   const handleBurnout = () => {
     const ns = { ...G.stats };
     for (const k of SK) ns[k] = clamp(ns[k] - 3);
-    const ng = { ...G, stats:ns, stress:clamp(G.stress - 30), burnouts:(G.burnouts||0)+1 };
+    const ng = { ...G, stats:ns, stress:clamp(G.stress - 30, 0, 100), burnouts:(G.burnouts||0)+1 };
     setG(ng);
     advanceTurn(ng);
   };
