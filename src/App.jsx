@@ -19,38 +19,38 @@ const SK = Object.keys(STAT_META);
 const initStats = ()=>Object.fromEntries(SK.map(k=>[k,10]));
 
 const CLASSES = [
-  { id:"c1", name:"국어 심화",  eff:{academic:3,emotion:1} },
-  { id:"c2", name:"수학 심화",  eff:{academic:3,inquiry:2} },
-  { id:"c3", name:"과학 탐구",  eff:{inquiry:3,tech:1} },
-  { id:"c4", name:"사회 탐구",  eff:{academic:2,social:2} },
-  { id:"c5", name:"영어 회화",  eff:{academic:2,social:1} },
-  { id:"c6", name:"코딩 수업",  eff:{tech:3,inquiry:1}, school:"middle" },
-  { id:"c7", name:"체육 강화",  eff:{physical:4,grit:1} },
-  { id:"c8", name:"음악/미술",  eff:{emotion:3,creativity:2} },
+  { id:"c1", name:"국어 심화",  eff:{academic:3,emotion:1}, msgs:["독서 감상문에서 선생님이 칭찬해주셨어요!","오늘 토론에서 멋진 발표를 했어요.","새로운 책을 읽고 세상이 넓어진 기분이에요."] },
+  { id:"c2", name:"수학 심화",  eff:{academic:3,inquiry:2}, msgs:["어려운 문제를 풀었더니 뿌듯해요!","수학 공식이 머릿속에서 딱딱 맞아떨어져요.","오늘 배운 개념이 신기하고 재미있었어요."] },
+  { id:"c3", name:"과학 탐구",  eff:{inquiry:3,tech:1}, msgs:["실험 결과가 예상과 딱 맞아서 신났어요!","현미경으로 새로운 세계를 봤어요.","가설을 세우고 검증하는 과정이 짜릿해요."] },
+  { id:"c4", name:"사회 탐구",  eff:{academic:2,social:2}, msgs:["역사 속 인물의 이야기에 빠져들었어요.","사회 현상을 분석하는 눈이 생긴 것 같아요.","모둠 토론에서 다양한 의견을 들었어요."] },
+  { id:"c5", name:"영어 회화",  eff:{academic:2,social:1}, msgs:["외국인 선생님과 자연스럽게 대화했어요!","영어 팝송 가사가 들리기 시작했어요.","영어로 자기소개를 멋지게 해냈어요."] },
+  { id:"c6", name:"코딩 수업",  eff:{tech:3,inquiry:1}, school:"middle", msgs:["내가 만든 프로그램이 드디어 동작해요!","버그를 찾아서 고치는 게 퍼즐 같아요.","알고리즘이 점점 이해되기 시작했어요."] },
+  { id:"c7", name:"체육 강화",  eff:{physical:4,grit:1}, msgs:["체력 측정에서 기록이 쑥 올랐어요!","운동 후 땀 흘리니까 기분이 상쾌해요.","친구들과 팀으로 운동하니 더 재미있어요."] },
+  { id:"c8", name:"음악/미술",  eff:{emotion:3,creativity:2}, msgs:["내가 그린 그림을 친구들이 좋아해줬어요!","새로운 악기 연주법을 배웠어요.","예술 작품을 감상하며 감동받았어요."] },
 ];
 
 const CLUBS = [
-  { id:"cl1",  name:"축구부",     eff:{physical:4,social:2,grit:1} },
-  { id:"cl2",  name:"미술부",     eff:{creativity:4,emotion:2} },
-  { id:"cl3",  name:"과학반",     eff:{inquiry:4,academic:1} },
-  { id:"cl4",  name:"밴드부",     eff:{emotion:4,social:2} },
-  { id:"cl5",  name:"로봇공학반", eff:{tech:4,inquiry:2}, school:"middle" },
-  { id:"cl6",  name:"독서토론반", eff:{academic:2,social:3} },
-  { id:"cl7",  name:"학생회",     eff:{social:4,grit:2} },
-  { id:"cl8",  name:"요리반",     eff:{creativity:3,emotion:2} },
-  { id:"cl9",  name:"방송반",     eff:{tech:2,social:3,creativity:1} },
-  { id:"cl10", name:"댄스부",     eff:{physical:3,emotion:3} },
+  { id:"cl1",  name:"축구부",     eff:{physical:4,social:2,grit:1}, msgs:["오늘 연습 경기에서 멋진 골을 넣었어요!","체력이 눈에 띄게 좋아지고 있어요.","팀워크의 중요성을 느낀 하루였어요."] },
+  { id:"cl2",  name:"미술부",     eff:{creativity:4,emotion:2}, msgs:["수채화 기법을 새로 배웠어요!","전시회 출품작을 완성했어요.","색감에 대한 감각이 살아나는 것 같아요."] },
+  { id:"cl3",  name:"과학반",     eff:{inquiry:4,academic:1}, msgs:["자유 주제 실험에서 흥미로운 결과를 얻었어요!","과학 잡지를 읽으며 새로운 아이디어가 떠올랐어요.","선배가 연구 방법을 친절하게 알려줬어요."] },
+  { id:"cl4",  name:"밴드부",     eff:{emotion:4,social:2}, msgs:["합주가 점점 맞아가고 있어요!","새로운 곡 연습을 시작했어요.","공연 준비가 설레고 떨려요."] },
+  { id:"cl5",  name:"로봇공학반", eff:{tech:4,inquiry:2}, school:"middle", msgs:["로봇이 드디어 정해진 경로를 따라 움직여요!","센서 프로그래밍이 점점 재미있어져요.","대회 출전을 목표로 열심히 준비 중이에요."] },
+  { id:"cl6",  name:"독서토론반", eff:{academic:2,social:3}, msgs:["이번 달 추천 도서가 정말 재미있었어요!","토론에서 논리적으로 반박하는 법을 배웠어요.","다양한 관점으로 책을 읽는 눈이 생겼어요."] },
+  { id:"cl7",  name:"학생회",     eff:{social:4,grit:2}, msgs:["학교 행사 기획안이 통과됐어요!","학생들의 의견을 모아 건의서를 제출했어요.","리더십에 대해 많이 배우는 시간이었어요."] },
+  { id:"cl8",  name:"요리반",     eff:{creativity:3,emotion:2}, msgs:["오늘 만든 요리를 친구들이 맛있다고 했어요!","새로운 레시피에 도전해서 성공했어요.","재료를 창의적으로 조합하는 게 재미있어요."] },
+  { id:"cl9",  name:"방송반",     eff:{tech:2,social:3,creativity:1}, msgs:["점심시간 교내 방송을 멋지게 진행했어요!","영상 편집 기술이 늘고 있어요.","인터뷰 촬영을 하면서 소통 능력이 늘었어요."] },
+  { id:"cl10", name:"댄스부",     eff:{physical:3,emotion:3}, msgs:["새로운 안무를 완벽하게 소화했어요!","거울 앞에서 연습하니 동작이 깔끔해졌어요.","공연 무대에 대한 기대감이 커져요."] },
 ];
 
 const VACATIONS = [
-  { id:"v1", name:"학원 집중",   eff:{academic:5}, stress:3 },
-  { id:"v2", name:"스포츠 캠프", eff:{physical:5,grit:2} },
-  { id:"v3", name:"해외 체험",   eff:{social:4,creativity:2} },
-  { id:"v4", name:"자유 놀이",   eff:{creativity:1}, stress:-5 },
-  { id:"v5", name:"직업 체험",   eff:{inquiry:3,social:2} },
-  { id:"v6", name:"봉사활동",    eff:{social:3,emotion:2,grit:1} },
-  { id:"v7", name:"코딩 캠프",   eff:{tech:5,grit:1}, school:"middle" },
-  { id:"v8", name:"예술 워크숍", eff:{creativity:5,emotion:2} },
+  { id:"v1", name:"학원 집중",   eff:{academic:5}, stress:3, msgs:["문제집 한 권을 다 풀었어요!","선생님이 실력이 많이 늘었다고 했어요.","열심히 공부한 보람이 느껴져요."] },
+  { id:"v2", name:"스포츠 캠프", eff:{physical:5,grit:2}, msgs:["캠프에서 새로운 운동 친구를 사귀었어요!","아침부터 저녁까지 운동하니 체력이 쑥 올랐어요.","힘들었지만 포기하지 않아서 뿌듯해요."] },
+  { id:"v3", name:"해외 체험",   eff:{social:4,creativity:2}, msgs:["다른 나라의 문화를 직접 체험하니 신기했어요!","외국 친구와 소통하면서 시야가 넓어졌어요.","새로운 음식과 풍경에 감동받았어요."] },
+  { id:"v4", name:"자유 놀이",   eff:{creativity:1}, stress:-5, msgs:["마음껏 쉬니까 에너지가 충전됐어요!","하고 싶은 것을 마음대로 하니 행복해요.","여유로운 시간이 창의력의 원천이에요."] },
+  { id:"v5", name:"직업 체험",   eff:{inquiry:3,social:2}, msgs:["다양한 직업의 세계를 엿볼 수 있었어요!","꿈에 한 발짝 다가간 기분이에요.","현장에서 일하는 분들의 이야기가 인상적이었어요."] },
+  { id:"v6", name:"봉사활동",    eff:{social:3,emotion:2,grit:1}, msgs:["도움이 필요한 분들에게 보탬이 된 것 같아요.","봉사를 하면서 오히려 제가 더 많이 배웠어요.","따뜻한 마음을 나누는 시간이었어요."] },
+  { id:"v7", name:"코딩 캠프",   eff:{tech:5,grit:1}, school:"middle", msgs:["해커톤에서 팀 프로젝트를 완성했어요!","새로운 프로그래밍 언어를 배웠어요.","멘토 개발자의 조언이 정말 도움됐어요."] },
+  { id:"v8", name:"예술 워크숍", eff:{creativity:5,emotion:2}, msgs:["전문 작가에게 직접 지도받았어요!","영감이 샘솟는 시간이었어요.","나만의 작품을 완성해서 전시했어요."] },
 ];
 
 const EVENTS = [
@@ -148,7 +148,7 @@ const TITLES = [
   { name:"번아웃 생존자",emoji:"💪",check:(s,f)=>f.burnouts>=3 },
   { name:"자유영혼",emoji:"🦋",check:(s,f)=>f.neverRepeat },
   { name:"고집불통",emoji:"🪨",check:(s,f)=>f.maxConsecutiveClub>=10 },
-  { name:"이벤트 헌터",emoji:"🎯",check:(s,f)=>f.eventCount>=18 },
+  { name:"이벤트 헌터",emoji:"🎯",check:(s,f)=>f.eventCount>=12 },
   { name:"스트레스 제로",emoji:"😌",check:(s,f)=>f.maxStress<=30 },
   { name:"근성의 아이콘",emoji:"🏔️",check:(s,f)=>s.grit>=90&&f.burnouts>=1 },
   { name:"균형의 달인",emoji:"⚖️",check:(s)=>{const v=SK.map(k=>s[k]);return Math.max(...v)-Math.min(...v)<=15;} },
@@ -157,6 +157,43 @@ const TITLES = [
   { name:"체력 괴물",emoji:"🦁",check:(s)=>s.physical>=95 },
   { name:"숨겨진 재능",emoji:"💎",check:(s,f)=>f.hiddenEvents>=3 },
 ];
+
+const CRITICAL_MSGS = [
+  "오늘 컨디션이 최고예요!",
+  "엄청난 집중력을 발휘했어요!",
+  "모든 게 술술 풀리는 날이에요!",
+  "숨겨진 재능이 빛을 발했어요!",
+  "선생님도 깜짝 놀랄 정도의 실력이에요!",
+  "기적 같은 하루였어요!",
+  "노력이 빛나는 순간이에요!",
+  "최고의 하루! 모든 게 완벽했어요!",
+];
+
+const FAIL_MSGS = [
+  "오늘은 영 집중이 안 됐어요...",
+  "컨디션이 별로인 하루였어요.",
+  "뭔가 잘 안 풀리는 날이에요.",
+  "피곤해서 효율이 떨어졌어요.",
+  "잡념이 많아서 집중하기 어려웠어요.",
+  "오늘은 좀 쉬어가야 할 것 같아요.",
+  "실수가 잦은 하루였어요.",
+  "기대만큼 결과가 나오지 않았어요.",
+];
+
+function getConditionMsg(stats, prevStats, stress, flags) {
+  const msgs = [];
+  for (const k of SK) {
+    if (stats[k] >= 90 && prevStats[k] < 90) msgs.push(`${STAT_META[k].icon} ${STAT_META[k].name}의 달인이 되어가고 있어요!`);
+    else if (stats[k] >= 70 && prevStats[k] < 70) msgs.push(`${STAT_META[k].icon} ${STAT_META[k].name} 실력이 눈에 띄게 늘었어요!`);
+    else if (stats[k] >= 50 && prevStats[k] < 50) msgs.push(`${STAT_META[k].icon} ${STAT_META[k].name}이 부쩍 늘었어요! 이대로 쭉 가요!`);
+  }
+  if (stress >= 60) msgs.push("요즘 좀 지쳐 보여요... 쉬어가는 건 어때요?");
+  else if (stress >= 40 && stress < 60) msgs.push("살짝 피곤한 기색이 보여요.");
+  if (stress === 0 && (flags.turn||0) > 10) msgs.push("스트레스 관리를 정말 잘하고 있어요! 👏");
+  if ((flags.burnouts||0) >= 2) msgs.push("또 무리하면 안 돼요... 건강이 최고예요.");
+  if ((flags.currentConsecutiveClub||0) >= 5) msgs.push("꾸준히 같은 활동을 하니 점점 전문가가 되어가요!");
+  return msgs.length > 0 ? msgs[Math.floor(Math.random() * msgs.length)] : null;
+}
 
 /* ═══════════════════════════════════════════
    HELPERS
@@ -397,19 +434,45 @@ function ScheduleScreen({ G, turnInfo, onConfirm }) {
   );
 }
 
-function ResultScreen({ changes, turnInfo, onContinue }) {
+function ResultScreen({ result, turnInfo, onContinue }) {
+  const { changes, rollType, rollMsg, activityMsgs, conditionMsg } = result;
+  const rollColors = { critical: P.gold, normal: P.accent, fail: P.orange };
+  const rollLabels = { critical: "🌟 대성공!", normal: "📊 결과", fail: "😅 부진..." };
+
   return (
     <div style={{ textAlign:"center", paddingTop:30 }}>
       <div style={{ fontSize:15, color:P.muted, marginBottom:8 }}>{turnInfo.label} {turnInfo.grade}학년 · {turnInfo.semLabel}</div>
-      <h2 style={{ fontSize:20, color:P.accent, margin:"0 0 20px" }}>📊 결과</h2>
-      <div style={{ display:"flex", flexWrap:"wrap", gap:8, justifyContent:"center", marginBottom:24 }}>
+      <h2 style={{ fontSize:20, color:rollColors[rollType], margin:"0 0 12px", animation:rollType==="critical"?"pop .5s ease":undefined }}>{rollLabels[rollType]}</h2>
+
+      {rollMsg && (
+        <div style={{ padding:"10px 16px", background:rollType==="critical"?P.gold+"18":P.orange+"18", borderRadius:10, border:`1px solid ${rollColors[rollType]}44`, marginBottom:12, fontSize:14, color:rollColors[rollType], fontWeight:600, animation:"fadeIn .5s ease" }}>
+          {rollMsg}
+        </div>
+      )}
+
+      {activityMsgs && activityMsgs.length > 0 && (
+        <div style={{ marginBottom:16 }}>
+          {activityMsgs.map((msg, i) => (
+            <div key={i} style={{ fontSize:13, color:P.text, marginBottom:4, lineHeight:1.6, animation:`fadeIn ${0.3+i*0.2}s ease` }}>💬 {msg}</div>
+          ))}
+        </div>
+      )}
+
+      <div style={{ display:"flex", flexWrap:"wrap", gap:8, justifyContent:"center", marginBottom:16 }}>
         {Object.entries(changes).filter(([,v])=>v!==0).map(([k,v])=>(
-          <div key={k} style={{ padding:"8px 14px", background:v>0?"rgba(52,211,153,.12)":"rgba(248,113,113,.12)", borderRadius:10, border:`1px solid ${v>0?P.green:P.red}44` }}>
+          <div key={k} style={{ padding:"8px 14px", background:v>0?(rollType==="critical"?"rgba(251,191,36,.12)":"rgba(52,211,153,.12)"):"rgba(248,113,113,.12)", borderRadius:10, border:`1px solid ${v>0?(rollType==="critical"?P.gold:P.green):P.red}44` }}>
             <span style={{fontSize:13}}>{k==="stress"?"😰":STAT_META[k]?.icon} {k==="stress"?"스트레스":STAT_META[k]?.name}</span>
-            <span style={{ marginLeft:6, fontWeight:700, color:v>0?P.green:P.red }}>{v>0?"+":""}{v}</span>
+            <span style={{ marginLeft:6, fontWeight:700, color:v>0?(rollType==="critical"?P.gold:P.green):P.red }}>{v>0?"+":""}{v}{rollType==="critical"&&v>0&&k!=="stress"?" 🌟":""}</span>
           </div>
         ))}
       </div>
+
+      {conditionMsg && (
+        <div style={{ fontSize:13, color:P.muted, marginBottom:16, fontStyle:"italic", animation:"fadeIn .8s ease" }}>
+          💡 {conditionMsg}
+        </div>
+      )}
+
       <Btn onClick={onContinue}>계속 →</Btn>
     </div>
   );
@@ -563,7 +626,7 @@ export default function App() {
   const [saves, setSaves] = useState(()=>[0,1,2].map(i=>storageGet(`dreamclass:save${i}`)));
   const [collection, setCollection] = useState(()=>storageGet("dreamclass:collection",{jobs:[],titles:[]}));
   const [G, setG] = useState(null);
-  const [turnChanges, setTurnChanges] = useState(null);
+  const [turnResult, setTurnResult] = useState(null);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [milestoneSchool, setMilestoneSchool] = useState(null);
   const [endingData, setEndingData] = useState(null);
@@ -590,29 +653,50 @@ export default function App() {
 
   const handleConfirm = (clsId, clubId, vacId) => {
     const mult = G.mode === "fast" ? 1.8 : 1;
+    const prevStats = { ...G.stats };
     let ns = { ...G.stats };
     let nStress = G.stress;
-    const changes = {};
+
+    // Roll type: 오늘의 운세 (턴당 1회)
+    const roll = Math.random();
+    const failChance = Math.max(0.02, 0.10 - (G.stats.grit || 10) * 0.001);
+    let rollType = "normal";
+    let variance;
+    if (roll < 0.10) { rollType = "critical"; variance = 1.5; }
+    else if (roll > 1 - failChance) { rollType = "fail"; variance = 0.5; }
+    else { variance = 0.7 + Math.random() * 0.6; } // 0.7 ~ 1.3
+
+    const activityMsgs = [];
 
     if (clsId) {
       const cls = CLASSES.find(c=>c.id===clsId);
-      const r = applyEffects(ns, nStress, cls.eff, 0, mult);
+      const r = applyEffects(ns, nStress, cls.eff, 0, mult * variance);
       ns = r.stats; nStress = r.stress;
+      if (cls.msgs) activityMsgs.push(cls.msgs[Math.floor(Math.random() * cls.msgs.length)]);
     }
     if (clubId) {
       const club = CLUBS.find(c=>c.id===clubId);
-      const r = applyEffects(ns, nStress, club.eff, 0, mult);
+      const r = applyEffects(ns, nStress, club.eff, 0, mult * variance);
       ns = r.stats; nStress = r.stress;
       nStress = clamp(nStress + 1);
+      if (club.msgs) activityMsgs.push(club.msgs[Math.floor(Math.random() * club.msgs.length)]);
     }
     if (vacId) {
       const vac = VACATIONS.find(v=>v.id===vacId);
-      const r = applyEffects(ns, nStress, vac.eff, vac.stress||0, mult);
+      const r = applyEffects(ns, nStress, vac.eff, vac.stress||0, mult * variance);
       ns = r.stats; nStress = r.stress;
+      if (vac.msgs) activityMsgs.push(vac.msgs[Math.floor(Math.random() * vac.msgs.length)]);
     }
 
-    for (const k of SK) { const d = ns[k] - G.stats[k]; if (d) changes[k] = d; }
+    const changes = {};
+    for (const k of SK) { const d = ns[k] - prevStats[k]; if (d) changes[k] = d; }
     const sd = nStress - G.stress; if (sd) changes.stress = sd;
+
+    let rollMsg = null;
+    if (rollType === "critical") rollMsg = CRITICAL_MSGS[Math.floor(Math.random() * CRITICAL_MSGS.length)];
+    if (rollType === "fail") rollMsg = FAIL_MSGS[Math.floor(Math.random() * FAIL_MSGS.length)];
+
+    const conditionMsg = getConditionMsg(ns, prevStats, nStress, G);
 
     let cc = G.currentConsecutiveClub||0, mc = G.maxConsecutiveClub||0;
     if (clubId && clubId === G.lastClub) { cc++; } else { cc = clubId ? 1 : 0; }
@@ -625,7 +709,10 @@ export default function App() {
     let vol = G.volunteerCount||0;
     if (vacId === "v6") vol++;
 
-    const ng = { ...G, stats:ns, stress:nStress, maxStress:Math.max(G.maxStress||0, nStress), lastActivity:actKey, lastClub:clubId||G.lastClub, currentConsecutiveClub:cc, maxConsecutiveClub:mc, neverRepeat:nr, volunteerCount:vol };
+    let hid = G.hiddenEvents||0;
+    if (rollType === "critical") hid++;
+
+    const ng = { ...G, stats:ns, stress:nStress, maxStress:Math.max(G.maxStress||0, nStress), lastActivity:actKey, lastClub:clubId||G.lastClub, currentConsecutiveClub:cc, maxConsecutiveClub:mc, neverRepeat:nr, volunteerCount:vol, hiddenEvents:hid };
 
     const turnInfo = getTurnInfo(G.turn, G.mode);
     if (turnInfo.year === 6 && !G.topStatElementary) {
@@ -633,7 +720,7 @@ export default function App() {
     }
 
     setG(ng);
-    setTurnChanges(changes);
+    setTurnResult({ changes, rollType, rollMsg, activityMsgs, conditionMsg });
     setScreen("result");
   };
 
@@ -738,7 +825,7 @@ export default function App() {
       {screen === "title" && <TitleScreen onNew={handleNew} saves={saves} onLoad={handleLoad} onCollection={()=>setScreen("collection")} />}
       {screen === "setup" && <SetupScreen onStart={handleStart} />}
       {screen === "schedule" && G && <ScheduleScreen G={G} turnInfo={turnInfo} onConfirm={handleConfirm} />}
-      {screen === "result" && <ResultScreen changes={turnChanges} turnInfo={turnInfo} onContinue={handleResultContinue} />}
+      {screen === "result" && <ResultScreen result={turnResult} turnInfo={turnInfo} onContinue={handleResultContinue} />}
       {screen === "event" && currentEvent && <EventScreen event={currentEvent} onChoice={handleEventChoice} mult={mult} />}
       {screen === "burnout" && G && <BurnoutScreen name={G.name} onContinue={handleBurnout} />}
       {screen === "milestone" && G && <MilestoneScreen school={milestoneSchool} name={G.name} stats={G.stats} onContinue={handleMilestoneContinue} />}
