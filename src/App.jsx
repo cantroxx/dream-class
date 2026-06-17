@@ -12,7 +12,7 @@ const STAT_META = {
   social:    { name:"친구 관계", icon:"🤝", color:"#fbbf24" },
   inquiry:   { name:"탐구력",    icon:"🔬", color:"#a78bfa" },
   tech:      { name:"컴퓨터 실력", icon:"💻", color:"#fb923c" },
-  emotion:   { name:"마음 감성", icon:"🎵", color:"#f87171" },
+  emotion:   { name:"따뜻한 마음", icon:"🎵", color:"#f87171" },
   grit:      { name:"끈기",      icon:"🔥", color:"#e879f9" },
 };
 const SK = Object.keys(STAT_META);
@@ -27,6 +27,8 @@ const CLASSES = [
   { id:"c6", name:"블록 코딩(엔트리)",  eff:{tech:3,inquiry:1}, school:"middle", msgs:["내가 만든 프로그램이 드디어 동작해요!","버그를 찾아서 고치는 게 퍼즐 같아요.","알고리즘이 점점 이해되기 시작했어요."] },
   { id:"c7", name:"뉴스포츠와 뜀틀",  eff:{physical:4,grit:1}, msgs:["체력 측정에서 기록이 쑥 올랐어요!","운동 후 땀 흘리니까 기분이 상쾌해요.","친구들과 팀으로 운동하니 더 재미있어요."] },
   { id:"c8", name:"음악과 미술 시간",  eff:{emotion:3,creativity:2}, msgs:["내가 그린 그림을 친구들이 좋아해줬어요!","새로운 악기 연주법을 배웠어요.","예술 작품을 감상하며 감동받았어요."] },
+  { id:"c9", name:"생태와 환경 수업",  eff:{inquiry:3,emotion:1}, msgs:["학교 텃밭에서 방울토마토가 자라는 걸 보니 너무 신기해요!","분리배출을 열심히 해서 지구를 지키는 파수꾼이 될래요."] },
+  { id:"c10", name:"어린이 역사 탐험",  eff:{academic:2,creativity:2}, msgs:["우리 고장의 옛날 이야기를 배우는 게 삼국지보다 재밌어요!","과거로 시간 여행을 다녀온 기분이에요."] },
 ];
 
 const CLUBS = [
@@ -40,6 +42,8 @@ const CLUBS = [
   { id:"cl8",  name:"꼬마 요리사반",     eff:{creativity:3,emotion:2}, msgs:["오늘 만든 요리를 친구들이 맛있다고 했어요!","새로운 레시피에 도전해서 성공했어요.","재료를 창의적으로 조합하는 게 재미있어요."] },
   { id:"cl9",  name:"방송반",     eff:{tech:2,social:3,creativity:1}, msgs:["점심시간 교내 방송을 멋지게 진행했어요!","영상 편집 기술이 늘고 있어요.","인터뷰 촬영을 하면서 소통 능력이 늘었어요."] },
   { id:"cl10", name:"방송 댄스 동아리",     eff:{physical:3,emotion:3}, msgs:["새로운 안무를 완벽하게 소화했어요!","거울 앞에서 연습하니 동작이 깔끔해졌어요.","공연 무대에 대한 기대감이 커져요."] },
+  { id:"cl11", name:"바둑과 보드게임반",     eff:{grit:3,creativity:2,inquiry:1}, msgs:["상대방의 수를 예측하며 바둑돌을 놓을 때 엄청 짜릿해요!","보드게임 규칙을 지키며 포기하지 않고 끝까지 이겼어요!"] },
+  { id:"cl12", name:"어린이 연극 교실",     eff:{emotion:3,creativity:2,social:1}, msgs:["연극 무대에서 다른 주인공의 마음이 되어 대사를 해봤어요!","친구들과 몸으로 감정을 표현하는 게 정말 즐거워요!"] },
 ];
 
 const VACATIONS = [
@@ -377,7 +381,7 @@ const Btn = ({ children, onClick, color=P.accent, disabled, small, full }) => (
 
 const STAT_DESCS = {
   academic: {
-    desc: "어려운 수학 문제나 국어 독해를 척척 잘하는 지적 능력이에요.",
+    desc: "어려운 수학 문제나 국어 글쓰기를 척척 잘해내는 공부하고 생각하는 힘이에요.",
     jobs: "의사, 과학자, 변호사, 약사, 교사 등 전문직 분야"
   },
   physical: {
@@ -402,7 +406,7 @@ const STAT_DESCS = {
   },
   emotion: {
     desc: "예술 작품에 감동하거나 친구가 속상할 때 위로해 주는 예쁜 마음씨예요.",
-    jobs: "음악가, 동물병원 의사, 간호사, 요리사 등 감성 분야"
+    jobs: "음악가, 동물병원 의사, 간호사, 요리사 등 따뜻한 마음 분야"
   },
   grit: {
     desc: "포기하지 않고 힘든 일도 끝까지 해내는 인내심이에요.",
