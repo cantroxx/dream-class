@@ -407,175 +407,101 @@ const GlassCard = ({ children, accent, onClick, selected, style:s }) => (
   }}>{children}</div>
 );
 
-function StudentAvatar({ stats, stress, school, width = 120, height = 120 }) {
+function StudentAvatar({ gender = "male", stats, stress, school, width = 120, height = 120 }) {
   const isHighAcademic = stats.academic >= 50 || stats.inquiry >= 50;
   const isHighPhysical = stats.physical >= 50;
   const isHighTech = stats.tech >= 50;
   const isHighArt = stats.creativity >= 50 || stats.emotion >= 50;
   const isHighGrit = stats.grit >= 50;
-  
-  let eyeColor = "#1e293b";
-  let showDarkCircles = false;
-  let showSweat = false;
-  
-  let eyesPath = (
-    <>
-      <circle cx="45" cy="55" r="4" fill={eyeColor} />
-      <circle cx="75" cy="55" r="4" fill={eyeColor} />
-    </>
-  );
-  let mouthPath = <path d="M 50 70 Q 60 78 70 70" stroke={eyeColor} strokeWidth="3" fill="none" strokeLinecap="round" />;
-  
-  if (stress >= 80) {
-    eyesPath = (
-      <>
-        <line x1="41" y1="51" x2="49" y2="59" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
-        <line x1="49" y1="51" x2="41" y2="59" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
-        <line x1="71" y1="51" x2="79" y2="59" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
-        <line x1="79" y1="51" x2="71" y2="59" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" />
-      </>
-    );
-    mouthPath = <path d="M 52 73 Q 60 67 68 73" stroke="#ef4444" strokeWidth="3" fill="none" strokeLinecap="round" />;
-    showDarkCircles = true;
-  } else if (stress >= 60) {
-    eyesPath = (
-      <>
-        <ellipse cx="45" cy="56" rx="4" ry="2.5" fill={eyeColor} />
-        <ellipse cx="75" cy="56" rx="4" ry="2.5" fill={eyeColor} />
-        <path d="M 38 48 Q 45 46 50 51" stroke={eyeColor} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-        <path d="M 82 48 Q 75 46 70 51" stroke={eyeColor} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-      </>
-    );
-    mouthPath = <line x1="53" y1="70" x2="67" y2="70" stroke={eyeColor} strokeWidth="3" strokeLinecap="round" />;
-    showSweat = true;
-  } else if (stress < 30) {
-    eyesPath = (
-      <>
-        <path d="M 39 57 Q 45 49 51 57" stroke={P.green} strokeWidth="3.5" fill="none" strokeLinecap="round" />
-        <path d="M 69 57 Q 75 49 81 57" stroke={P.green} strokeWidth="3.5" fill="none" strokeLinecap="round" />
-      </>
-    );
-    mouthPath = <path d="M 48 68 Q 60 82 72 68 Z" fill="#ef4444" />;
-  }
 
-  let shirtColor = "#f8fafc";
-  let collarColor = "#cbd5e1";
-  let tieColor = "#94a3b8";
+  // Determine image URL - แยกเป็น 3 ช่วงอารมณ์: happy (stress < 30), normal (30 <= stress < 60), sad (stress >= 60)
+  let expr = "normal";
+  if (stress < 30) expr = "happy";
+  else if (stress >= 60) expr = "sad";
   
-  if (school === "elementary") {
-    shirtColor = "#fef08a";
-    collarColor = "#ca8a04";
-    tieColor = "";
-  } else if (school === "middle") {
-    shirtColor = "#e2e8f0";
-    collarColor = "#1e293b";
-    tieColor = "#ef4444";
-  } else {
-    shirtColor = "#cbd5e1";
-    collarColor = "#0f172a";
-    tieColor = "#fbbf24";
-  }
+  const imgPath = `/assets/avatar/${gender}_${school}_${expr}.png`;
 
   return (
-    <svg width={width} height={height} viewBox="0 0 120 120" style={{ overflow: "visible" }}>
+    <div style={{ position: "relative", width, height, borderRadius: "50%", overflow: "visible", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      {/* 1. Grit Flame Aura (behind) */}
       {isHighGrit && (
-        <g opacity="0.8">
-          <path d="M 20 80 Q 5 -10 60 10 Q 115 -10 100 80 Z" fill="url(#gritFlame)" opacity="0.6" />
-          <path d="M 30 80 Q 20 15 60 25 Q 100 15 90 80 Z" fill="url(#gritFlameInner)" opacity="0.8" />
-        </g>
+        <svg width={width * 1.3} height={height * 1.3} viewBox="0 0 120 120" style={{ position: "absolute", zIndex: 1, pointerEvents: "none", transform: "scale(1.25)" }}>
+          <defs>
+            <radialGradient id="gritFlame" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="gritFlameInner" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#facc15" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <g opacity="0.8">
+            <path d="M 20 80 Q 5 -10 60 10 Q 115 -10 100 80 Z" fill="url(#gritFlame)" opacity="0.6" />
+            <path d="M 30 80 Q 20 15 60 25 Q 100 15 90 80 Z" fill="url(#gritFlameInner)" opacity="0.8" />
+          </g>
+        </svg>
       )}
 
-      <defs>
-        <radialGradient id="gritFlame" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
-          <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id="gritFlameInner" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#facc15" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#ffedd5" />
-          <stop offset="100%" stopColor="#fed7aa" />
-        </linearGradient>
-      </defs>
+      {/* 2. Base Character Image */}
+      <img 
+        src={imgPath} 
+        alt="Student Avatar" 
+        style={{ 
+          width: "100%", 
+          height: "100%", 
+          objectFit: "cover", 
+          borderRadius: "50%", 
+          border: `2.5px solid ${stress >= 80 ? P.red : P.accent}`,
+          boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+          zIndex: 2,
+          position: "relative"
+        }} 
+      />
 
-      <path d="M 25 110 Q 60 90 95 110 L 95 120 L 25 120 Z" fill={collarColor} />
-      <path d="M 45 98 L 60 115 L 75 98 Z" fill={shirtColor} />
-      
-      {tieColor && (
-        <path d="M 57 110 L 63 110 L 65 125 L 60 130 L 55 125 Z" fill={tieColor} />
+      {/* 3. Stat Accessories Overlay (SVG) */}
+      {(isHighAcademic || isHighPhysical || isHighTech || isHighArt) && (
+        <svg width="100%" height="100%" viewBox="0 0 120 120" style={{ position: "absolute", top: 0, left: 0, zIndex: 3, pointerEvents: "none" }}>
+          {/* A. Athletic Sweatband (Physical) */}
+          {isHighPhysical && (
+            <g transform="translate(0, 10)">
+              <path d="M 33 37 Q 60 28 87 37 Q 88 41 87 45 Q 60 36 33 45 Z" fill="#ef4444" stroke="#dc2626" strokeWidth="1" />
+              <path d="M 35 41 Q 60 32 85 41" stroke="#ffffff" strokeWidth="2.5" fill="none" />
+            </g>
+          )}
+
+          {/* B. Smart Glasses (Academic / Inquiry) */}
+          {isHighAcademic && (
+            <g stroke="#334155" strokeWidth="3.5" fill="none" strokeLinecap="round" transform="translate(0, 5)">
+              <circle cx="46" cy="58" r="11" fill="rgba(255,255,255,0.15)" stroke="#334155" />
+              <circle cx="74" cy="58" r="11" fill="rgba(255,255,255,0.15)" stroke="#334155" />
+              <path d="M 57 58 L 63 58" />
+              <path d="M 35 58 Q 30 54 26 50" />
+              <path d="M 85 58 Q 90 54 94 50" />
+            </g>
+          )}
+
+          {/* C. Artist Beret (Creativity / Emotion) */}
+          {isHighArt && (
+            <g transform="translate(0, 2)">
+              <path d="M 32 30 Q 18 12 60 8 Q 102 12 88 30 Q 75 22 60 23 Q 45 22 32 30" fill="#a78bfa" stroke="#8b5cf6" strokeWidth="1" />
+              <path d="M 60 8 L 60 2" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round" />
+            </g>
+          )}
+
+          {/* D. Programmer Headphones (Tech) */}
+          {isHighTech && (
+            <g transform="translate(0, 8)">
+              <path d="M 32 45 Q 60 18 88 45" stroke="#06b6d4" strokeWidth="4" fill="none" />
+              <rect x="21" y="45" width="9" height="20" rx="4" fill="#0891b2" />
+              <rect x="18" y="48" width="4" height="14" rx="2" fill="#22d3ee" />
+              <rect x="90" y="45" width="9" height="20" rx="4" fill="#0891b2" />
+              <rect x="98" y="48" width="4" height="14" rx="2" fill="#22d3ee" />
+            </g>
+          )}
+        </svg>
       )}
-
-      {school === "elementary" && (
-        <>
-          <path d="M 32 99 Q 34 110 38 120" stroke="#ea580c" strokeWidth="5" fill="none" strokeLinecap="round" />
-          <path d="M 88 99 Q 86 110 82 120" stroke="#ea580c" strokeWidth="5" fill="none" strokeLinecap="round" />
-        </>
-      )}
-
-      <rect x="52" y="80" width="16" height="15" rx="3" fill="#fed7aa" />
-      <circle cx="60" cy="60" r="32" fill="url(#skinGrad)" stroke="#fdba74" strokeWidth="1.5" />
-
-      {showSweat && (
-        <path d="M 88 48 Q 90 40 92 48 Q 95 53 92 56 Q 89 53 88 48" fill="#38bdf8" />
-      )}
-
-      {showDarkCircles && (
-        <>
-          <ellipse cx="45" cy="62" rx="8" ry="4" fill="#6366f1" opacity="0.3" />
-          <ellipse cx="75" cy="62" rx="8" ry="4" fill="#6366f1" opacity="0.3" />
-        </>
-      )}
-
-      {eyesPath}
-      {mouthPath}
-
-      {stress < 30 && (
-        <>
-          <ellipse cx="38" cy="65" rx="4" ry="2" fill="#f43f5e" opacity="0.4" />
-          <ellipse cx="82" cy="65" rx="4" ry="2" fill="#f43f5e" opacity="0.4" />
-        </>
-      )}
-
-      <path d="M 28 50 Q 60 30 92 50 Q 85 30 60 28 Q 35 30 28 50" fill="#475569" />
-      <path d="M 28 50 Q 24 65 26 75 Q 30 75 31 55" fill="#334155" />
-      <path d="M 92 50 Q 96 65 94 75 Q 90 75 89 55" fill="#334155" />
-
-      {isHighPhysical && (
-        <g>
-          <path d="M 33 37 Q 60 28 87 37 Q 88 41 87 45 Q 60 36 33 45 Z" fill="#ef4444" stroke="#dc2626" strokeWidth="1" />
-          <path d="M 35 41 Q 60 32 85 41" stroke="#ffffff" strokeWidth="2.5" fill="none" />
-        </g>
-      )}
-
-      {isHighAcademic && (
-        <g stroke="#475569" strokeWidth="3" fill="none" strokeLinecap="round">
-          <circle cx="45" cy="56" r="10" />
-          <circle cx="75" cy="56" r="10" />
-          <path d="M 55 56 L 65 56" />
-          <path d="M 35 56 L 27 50" />
-          <path d="M 85 56 L 93 50" />
-        </g>
-      )}
-
-      {isHighArt && (
-        <g>
-          <path d="M 30 35 Q 20 20 60 15 Q 100 20 90 35 Q 75 25 60 26 Q 45 25 30 35" fill="#a78bfa" stroke="#8b5cf6" strokeWidth="1" />
-          <path d="M 60 15 L 60 9" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round" />
-        </g>
-      )}
-
-      {isHighTech && (
-        <g>
-          <path d="M 32 45 Q 60 18 88 45" stroke="#06b6d4" strokeWidth="4" fill="none" />
-          <rect x="23" y="45" width="8" height="18" rx="4" fill="#0891b2" />
-          <rect x="20" y="48" width="4" height="12" rx="2" fill="#22d3ee" />
-          <rect x="89" y="45" width="8" height="18" rx="4" fill="#0891b2" />
-          <rect x="96" y="48" width="4" height="12" rx="2" fill="#22d3ee" />
-        </g>
-      )}
-    </svg>
+    </div>
   );
 }
 
@@ -661,6 +587,7 @@ function SetupScreen({ onStart }) {
   const [name, setName] = useState("");
   const [mode, setMode] = useState(null);
   const [slot, setSlot] = useState(0);
+  const [gender, setGender] = useState("male");
   return (
     <div style={{ maxWidth:400, margin:"40px auto" }}>
       <h2 style={{ color:P.accent, fontSize:22, marginBottom:24 }}>🎒 새 게임 시작</h2>
@@ -668,6 +595,16 @@ function SetupScreen({ onStart }) {
         <label style={{ fontSize:13, color:P.muted, display:"block", marginBottom:6 }}>이름을 입력하세요</label>
         <input value={name} onChange={e=>setName(e.target.value)} maxLength={8} placeholder="홍길동"
           style={{ width:"100%", padding:"12px 16px", borderRadius:10, border:`1px solid ${P.border}`, background:P.card, color:P.text, fontSize:16, outline:"none", boxSizing:"border-box" }} />
+      </div>
+      <div style={{ marginBottom:20 }}>
+        <label style={{ fontSize:13, color:P.muted, display:"block", marginBottom:8 }}>성별 선택</label>
+        <div style={{ display:"flex", gap:8 }}>
+          {[{id:"male",label:"👦 남학생"},{id:"female",label:"👧 여학생"}].map(g=>(
+            <GlassCard key={g.id} selected={gender===g.id} accent={P.accent} onClick={()=>setGender(g.id)} style={{flex:1,textAlign:"center"}}>
+              <div style={{ fontWeight:700, fontSize:15, color: gender===g.id?P.accent:P.text }}>{g.label}</div>
+            </GlassCard>
+          ))}
+        </div>
       </div>
       <div style={{ marginBottom:20 }}>
         <label style={{ fontSize:13, color:P.muted, display:"block", marginBottom:8 }}>게임 모드</label>
@@ -690,7 +627,7 @@ function SetupScreen({ onStart }) {
           ))}
         </div>
       </div>
-      <Btn onClick={()=>onStart(name||"학생",mode||"normal",slot)} disabled={!mode} full color={P.gold}>
+      <Btn onClick={()=>onStart(name||"학생",mode||"normal",slot,gender)} disabled={!mode} full color={P.gold}>
         🚀 입학하기!
       </Btn>
     </div>
@@ -728,7 +665,7 @@ function ScheduleScreen({ G, turnInfo, onConfirm }) {
       {/* Main Game Header Card */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16, background:"rgba(255,255,255,.02)", padding:"12px 16px", borderRadius:12, border:`1px solid ${P.border}` }}>
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-          <StudentAvatar stats={G.stats} stress={G.stress} school={turnInfo.school} width={48} height={48} />
+          <StudentAvatar gender={G.gender} stats={G.stats} stress={G.stress} school={turnInfo.school} width={48} height={48} />
           <div>
             <div style={{ fontSize:12, color:P.muted }}>{turnInfo.label} {turnInfo.grade}학년 · {turnInfo.semLabel}</div>
             <div style={{ fontSize:15, fontWeight:700, color:P.gold }}>{G.name}</div>
@@ -812,7 +749,7 @@ function ScheduleScreen({ G, turnInfo, onConfirm }) {
         <div style={{ animation: "fadeIn .3s ease" }}>
           {/* Large Avatar view */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, padding: "16px 0", background: "rgba(255,255,255,.02)", borderRadius: 12, border: `1px solid ${P.border}`, marginBottom: 16 }}>
-            <StudentAvatar stats={G.stats} stress={G.stress} school={turnInfo.school} width={100} height={100} />
+            <StudentAvatar gender={G.gender} stats={G.stats} stress={G.stress} school={turnInfo.school} width={100} height={100} />
             <div style={{ fontSize: 18, fontWeight: 800, color: P.gold }}>{G.name}</div>
             <div style={{ fontSize: 13, background: P.card, padding: "4px 12px", borderRadius: 20, border: `1px solid ${P.border}`, color: G.stress >= 80 ? P.red : P.accent, fontWeight: 700 }}>
               {getCurrentStateLabel(G)}
@@ -876,7 +813,7 @@ function ResultScreen({ result, turnInfo, G, onContinue }) {
 
       {/* Dynamic Avatar display on turn result */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-        <StudentAvatar stats={G.stats} stress={G.stress} school={turnInfo.school} width={90} height={90} />
+        <StudentAvatar gender={G.gender} stats={G.stats} stress={G.stress} school={turnInfo.school} width={90} height={90} />
       </div>
 
       {rollMsg && (
@@ -974,7 +911,7 @@ function EndingScreen({ G, job, titles, collection, onTitle }) {
         <div style={{ animation:"fadeIn .8s ease" }}>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12, marginBottom: 12 }}>
             <div style={{ fontSize:56 }}>{job.emoji}</div>
-            <StudentAvatar stats={G.stats} stress={G.stress} school="high" width={90} height={90} />
+            <StudentAvatar gender={G.gender} stats={G.stats} stress={G.stress} school="high" width={90} height={90} />
           </div>
           <h2 style={{ fontSize:26, color:P.gold, margin:"0 0 4px" }}>{G.name}</h2>
           <p style={{ fontSize:20, color:P.accent, fontWeight:700, margin:"0 0 20px" }}>{job.name}{job.name==="프리랜서"?" (아직 꿈을 찾는 중...)":""}</p>
@@ -1077,8 +1014,8 @@ export default function App() {
 
   const handleNew = () => setScreen("setup");
 
-  const handleStart = (name, mode, slot) => {
-    const g = { name, mode, slot, turn:0, stats:initStats(), stress:0, burnouts:0, seenEvents:[], volunteerCount:0, maxStress:0, eventCount:0, neverRepeat:true, lastActivity:null, maxConsecutiveClub:0, currentConsecutiveClub:0, lastClub:null, topStatElementary:null, topStatChanged:false, hiddenEvents:0 };
+  const handleStart = (name, mode, slot, gender) => {
+    const g = { name, mode, slot, gender, turn:0, stats:initStats(), stress:0, burnouts:0, seenEvents:[], volunteerCount:0, maxStress:0, eventCount:0, neverRepeat:true, lastActivity:null, maxConsecutiveClub:0, currentConsecutiveClub:0, lastClub:null, topStatElementary:null, topStatChanged:false, hiddenEvents:0 };
     setG(g);
     saveCurrentGame(g);
     setScreen("schedule");
@@ -1095,12 +1032,17 @@ export default function App() {
     let ns = { ...G.stats };
     let nStress = G.stress;
 
-    // Roll type: 오늘의 운세 (턴당 1회)
+    // Roll type: 오늘의 운세 (턴당 1회) - 스트레스 수준에 따른 대성공(critical) 확률 변동
+    let critChance = 0.10;
+    if (G.stress < 30) critChance = 0.20; // 행복 상태 -> 20%
+    else if (G.stress >= 80) critChance = 0.01; // 번아웃 위험 -> 1%
+    else if (G.stress >= 60) critChance = 0.05; // 피곤 상태 -> 5%
+
     const roll = Math.random();
     const failChance = Math.max(0.02, 0.10 - (G.stats.grit || 10) * 0.001);
     let rollType = "normal";
     let variance;
-    if (roll < 0.10) { rollType = "critical"; variance = 1.5; }
+    if (roll < critChance) { rollType = "critical"; variance = 1.5; }
     else if (roll > 1 - failChance) { rollType = "fail"; variance = 0.5; }
     else { variance = 0.7 + Math.random() * 0.6; } // 0.7 ~ 1.3
 
