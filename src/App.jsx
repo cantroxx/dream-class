@@ -12,7 +12,8 @@ const STAT_META = {
   social:    { name:"친구 관계", icon:"🤝", color:"#fbbf24" },
   inquiry:   { name:"탐구력",    icon:"🔬", color:"#a78bfa" },
   tech:      { name:"컴퓨터 실력", icon:"💻", color:"#fb923c" },
-  emotion:   { name:"따뜻한 마음", icon:"🎵", color:"#f87171" },
+  emotion:   { name:"감수성",    icon:"🎵", color:"#f87171" },
+  charm:     { name:"끼",        icon:"✨", color:"#fb7185" },
   grit:      { name:"끈기",      icon:"🔥", color:"#e879f9" },
 };
 const SK = Object.keys(STAT_META);
@@ -26,9 +27,9 @@ const CLASSES = [
   { id:"c5", name:"영어 회화",  eff:{academic:2,social:1}, msgs:["외국인 선생님과 자연스럽게 대화했어요!","영어 팝송 가사가 들리기 시작했어요.","영어로 자기소개를 멋지게 해냈어요."] },
   { id:"c6", name:"블록 코딩(엔트리)",  eff:{tech:3,inquiry:1}, school:"middle", msgs:["내가 만든 프로그램이 드디어 동작해요!","버그를 찾아서 고치는 게 퍼즐 같아요.","알고리즘이 점점 이해되기 시작했어요."] },
   { id:"c7", name:"뉴스포츠와 뜀틀",  eff:{physical:4,grit:1}, msgs:["체력 측정에서 기록이 쑥 올랐어요!","운동 후 땀 흘리니까 기분이 상쾌해요.","친구들과 팀으로 운동하니 더 재미있어요."] },
-  { id:"c8", name:"음악과 미술 시간",  eff:{emotion:3,creativity:2}, msgs:["내가 그린 그림을 친구들이 좋아해줬어요!","새로운 악기 연주법을 배웠어요.","예술 작품을 감상하며 감동받았어요."] },
+  { id:"c8", name:"음악과 미술 시간",  eff:{emotion:2,creativity:2,charm:1}, msgs:["내가 그린 그림을 친구들이 좋아해줬어요!","새로운 악기 연주법을 배웠어요.","예술 작품을 감상하며 감동받았어요."] },
   { id:"c9", name:"생태와 환경 수업",  eff:{inquiry:3,emotion:1}, msgs:["학교 텃밭에서 방울토마토가 자라는 걸 보니 너무 신기해요!","분리배출을 열심히 해서 지구를 지키는 파수꾼이 될래요."] },
-  { id:"c10", name:"어린이 역사 탐험",  eff:{academic:2,creativity:2}, msgs:["우리 고장의 옛날 이야기를 배우는 게 삼국지보다 재밌어요!","과거로 시간 여행을 다녀온 기분이에요."] },
+  { id:"c10", name:"어린이 역사 탐험",  eff:{academic:2,creativity:1,charm:1}, msgs:["우리 고장의 옛날 이야기를 배우는 게 삼국지보다 재밌어요!","과거로 시간 여행을 다녀온 기분이에요."] },
 ];
 
 const CLUBS = [
@@ -40,10 +41,10 @@ const CLUBS = [
   { id:"cl6",  name:"독서토론반", eff:{academic:2,social:3}, msgs:["이번 달 추천 도서가 정말 재미있었어요!","토론에서 논리적으로 반박하는 법을 배웠어요.","다양한 관점으로 책을 읽는 눈이 생겼어요."] },
   { id:"cl7",  name:"전교 어린이회",     eff:{social:4,grit:2}, msgs:["학교 행사 기획안이 통과됐어요!","학생들의 의견을 모아 건의서를 제출했어요.","리더십에 대해 많이 배우는 시간이었어요."] },
   { id:"cl8",  name:"꼬마 요리사반",     eff:{creativity:3,emotion:2}, msgs:["오늘 만든 요리를 친구들이 맛있다고 했어요!","새로운 레시피에 도전해서 성공했어요.","재료를 창의적으로 조합하는 게 재미있어요."] },
-  { id:"cl9",  name:"방송반",     eff:{tech:2,social:3,creativity:1}, msgs:["점심시간 교내 방송을 멋지게 진행했어요!","영상 편집 기술이 늘고 있어요.","인터뷰 촬영을 하면서 소통 능력이 늘었어요."] },
-  { id:"cl10", name:"방송 댄스 동아리",     eff:{physical:3,emotion:3}, msgs:["새로운 안무를 완벽하게 소화했어요!","거울 앞에서 연습하니 동작이 깔끔해졌어요.","공연 무대에 대한 기대감이 커져요."] },
+  { id:"cl9",  name:"방송반",     eff:{tech:2,social:2,charm:1,creativity:1}, msgs:["점심시간 교내 방송을 멋지게 진행했어요!","영상 편집 기술이 늘고 있어요.","인터뷰 촬영을 하면서 소통 능력이 늘었어요."] },
+  { id:"cl10", name:"방송 댄스 동아리",     eff:{physical:2,emotion:2,charm:2}, msgs:["새로운 안무를 완벽하게 소화했어요!","거울 앞에서 연습하니 동작이 깔끔해졌어요.","공연 무대에 대한 기대감이 커져요."] },
   { id:"cl11", name:"바둑과 보드게임반",     eff:{grit:3,creativity:2,inquiry:1}, msgs:["상대방의 수를 예측하며 바둑돌을 놓을 때 엄청 짜릿해요!","보드게임 규칙을 지키며 포기하지 않고 끝까지 이겼어요!"] },
-  { id:"cl12", name:"어린이 연극 교실",     eff:{emotion:3,creativity:2,social:1}, msgs:["연극 무대에서 다른 주인공의 마음이 되어 대사를 해봤어요!","친구들과 몸으로 감정을 표현하는 게 정말 즐거워요!"] },
+  { id:"cl12", name:"어린이 연극 교실",     eff:{emotion:2,charm:3,social:1}, msgs:["연극 무대에서 다른 주인공의 마음이 되어 대사를 해봤어요!","친구들과 몸으로 감정을 표현하는 게 정말 즐거워요!"] },
 ];
 
 const VACATIONS = [
@@ -51,7 +52,7 @@ const VACATIONS = [
   { id:"v2", name:"스포츠 캠프", eff:{physical:5,grit:2}, msgs:["캠프에서 새로운 운동 친구를 사귀었어요!","아침부터 저녁까지 운동하니 체력이 쑥 올랐어요.","힘들었지만 포기하지 않아서 뿌듯해요."] },
   { id:"v3", name:"해외 가족 여행",   eff:{social:4,creativity:2}, msgs:["다른 나라의 문화를 직접 체험하니 신기했어요!","외국 친구와 소통하면서 시야가 넓어졌어요.","새로운 음식과 풍경에 감동받았어요."] },
   { id:"v4", name:"하루 종일 자유 시간",   eff:{creativity:1}, stress:-5, msgs:["마음껏 쉬니까 에너지가 충전됐어요!","하고 싶은 것을 마음대로 하니 행복해요.","여유로운 시간이 창의력의 원천이에요."] },
-  { id:"v5", name:"키자니아 직업 체험",   eff:{inquiry:3,social:2}, msgs:["다양한 직업의 세계를 엿볼 수 있었어요!","꿈에 한 발짝 다가간 기분이에요.","현장에서 일하는 분들의 이야기가 인상적이었어요."] },
+  { id:"v5", name:"키자니아 직업 체험",   eff:{inquiry:2,social:2,charm:1}, msgs:["다양한 직업의 세계를 엿볼 수 있었어요!","꿈에 한 발짝 다가간 기분이에요.","현장에서 일하는 분들의 이야기가 인상적이었어요."] },
   { id:"v6", name:"봉사활동",    eff:{social:3,emotion:2,grit:1}, msgs:["도움이 필요한 분들에게 보탬이 된 것 같아요.","봉사를 하면서 오히려 제가 더 많이 배웠어요.","따뜻한 마음을 나누는 시간이었어요."] },
   { id:"v7", name:"코딩 캠프",   eff:{tech:5,grit:1}, school:"middle", msgs:["해커톤에서 팀 프로젝트를 완성했어요!","새로운 프로그래밍 언어를 배웠어요.","멘토 개발자의 조언이 정말 도움됐어요."] },
   { id:"v8", name:"미술관/박물관 나들이", eff:{creativity:5,emotion:2}, msgs:["전문 작가에게 직접 지도받았어요!","영감이 샘솟는 시간이었어요.","나만의 작품을 완성해서 전시했어요."] },
@@ -121,7 +122,10 @@ const JOBS = [
   { name:"빅데이터 분석가",emoji:"📈",cat:"IT",req:{tech:60,academic:65,inquiry:50} },
   { name:"디자이너",emoji:"🎨",cat:"예술",req:{creativity:75,emotion:60} },
   { name:"웹툰 작가",emoji:"✏️",cat:"예술",req:{creativity:80,grit:55,emotion:50} },
-  { name:"음악가",emoji:"🎵",cat:"예술",req:{emotion:85,grit:50} },
+  { name:"음악가",emoji:"🎵",cat:"예술",req:{emotion:75,charm:50,grit:40} },
+  { name:"가수",emoji:"🎤",cat:"예체능",req:{charm:75,emotion:60,physical:40} },
+  { name:"댄서 / 안무가",emoji:"🕺",cat:"예체능",req:{physical:75,charm:65,emotion:50} },
+  { name:"배우 / 모델",emoji:"🎭",cat:"예체능",req:{charm:70,emotion:60,social:50} },
   { name:"영화감독",emoji:"🎬",cat:"예술",req:{creativity:70,emotion:60,social:50} },
   { name:"뷰티 크리에이터",emoji:"💄",cat:"예술",req:{creativity:65,social:60,emotion:50} },
   { name:"요리사",emoji:"👨‍🍳",cat:"예술",req:{creativity:65,emotion:60,physical:40} },
@@ -129,7 +133,7 @@ const JOBS = [
   { name:"변호사",emoji:"⚖️",cat:"사회",req:{academic:75,social:60,grit:55} },
   { name:"외교관",emoji:"🌍",cat:"사회",req:{social:80,academic:60,emotion:40} },
   { name:"기자",emoji:"✍️",cat:"사회",req:{academic:55,emotion:70,social:50} },
-  { name:"유튜버",emoji:"📱",cat:"사회",req:{creativity:60,tech:50,social:60} },
+  { name:"유튜버",emoji:"📱",cat:"사회",req:{charm:65,tech:50,social:50} },
   { name:"환경운동가",emoji:"🌱",cat:"사회",req:{emotion:65,social:65,grit:50} },
   { name:"프로 운동선수",emoji:"⚽",cat:"체력",req:{physical:85,grit:70} },
   { name:"e스포츠 선수",emoji:"🕹️",cat:"체력",req:{tech:60,grit:75,physical:40} },
@@ -159,6 +163,9 @@ const TITLES = [
   { name:"봉사왕",emoji:"🤲",check:(s,f)=>f.volunteerCount>=4 },
   { name:"체력 괴물",emoji:"🦁",check:(s)=>s.physical>=95 },
   { name:"숨겨진 재능",emoji:"💎",check:(s,f)=>f.hiddenEvents>=3 },
+  { name:"골드 디스크 아티스트",emoji:"💿",check:(s)=>s.emotion>=90&&s.charm>=80 },
+  { name:"스트리트 댄스 제왕",emoji:"👑",check:(s)=>s.physical>=85&&s.charm>=75 },
+  { name:"반짝반짝 끼쟁이 대장",emoji:"✨",check:(s)=>s.charm>=95 },
 ];
 
 const CRITICAL_MSGS = [
@@ -292,7 +299,7 @@ function getPeerEvaluations(G) {
   } else if (stats.grit >= 75) {
     parent = "포기하지 않고 힘든 일도 끝까지 해내는 모습이 정말 대견하고 자랑스럽단다.";
   } else if (stats.emotion >= 60) {
-    parent = "친구를 위로해 줄 줄 아는 예쁜 마음씨를 가졌구나. 우리 집의 보물이야!";
+    parent = "어쩜 이렇게 감수성이 풍부하고 생각이 깊을까? 우리 집의 보물이야!";
   } else if (stats.academic >= 70) {
     parent = "공부도 알아서 척척 하니 엄마 아빠는 걱정이 하나도 없단다. 최고야!";
   }
@@ -300,6 +307,8 @@ function getPeerEvaluations(G) {
   let friend = "야! 매점 갈래? 이따 나랑 떡볶이 먹으러 가자!";
   if (stress >= 75) {
     friend = "너 요즘 피곤해 보여! 시험 끝나면 나랑 운동장에서 신나게 뛰어놀자!";
+  } else if (stats.charm >= 60) {
+    friend = "너 장기자랑 할 때 진짜 대박이더라! 완전 연예인 같았어. 나 나중에 사인 미리 받아둬도 돼?";
   } else if (stats.tech >= 60) {
     friend = "나중에 네가 갓겜(대박 게임) 만들면 나 테스터 꼭 시켜주라!";
   } else if (stats.physical >= 60) {
@@ -335,11 +344,12 @@ function getCurrentStateLabel(G) {
   const { stats, stress } = G;
   if (stress >= 80) return "💥 많이 지쳤어요 (꼭 쉬어야 해요)";
   if (stress >= 50) return "😰 피로 누적 (쉬엄쉬엄 하세요)";
+  if (stats.charm >= 75) return "✨ 미래의 슈퍼스타";
   if (stats.academic >= 70 && stats.inquiry >= 70) return "🔬 미래의 과학자 꿈나무";
   if (stats.academic >= 60 && stats.grit >= 60) return "🔥 끝까지 포기하지 않는 공부 벌레";
   if (stats.physical >= 75) return "🦁 운동장 골목대장 체력왕";
   if (stats.tech >= 75) return "💻 미래의 천재 프로그래머";
-  if (stats.creativity >= 70 || stats.emotion >= 70) return "🎨 꿈꾸는 꼬마 예술가";
+  if (stats.creativity >= 70) return "🎨 꿈꾸는 꼬마 예술가";
   if (stats.social >= 75) return "🎉 친구들 사이의 핵인싸";
   const vals = SK.map(k=>stats[k]);
   const diff = Math.max(...vals) - Math.min(...vals);
@@ -405,8 +415,12 @@ const STAT_DESCS = {
     jobs: "컴퓨터 프로그래머, 게임 개발자, 인공지능(AI) 개발자, 빅데이터 분석가 등"
   },
   emotion: {
-    desc: "예술 작품에 감동하거나 친구가 속상할 때 위로해 주는 예쁜 마음씨예요.",
-    jobs: "음악가, 동물병원 의사, 간호사, 요리사 등 따뜻한 마음 분야"
+    desc: "아름다운 예술을 느끼고, 친구의 마음에 공감하는 풍부한 감수성이에요.",
+    jobs: "가수, 댄서, 음악가, 디자이너, 동물병원 의사 등 예술 및 소통 분야"
+  },
+  charm: {
+    desc: "장기자랑이나 무대에서 나를 뽐내고 사람들을 사로잡는 스타성이에요.",
+    jobs: "가수, 댄서, 유튜버, 배우, 모델 등 방송 및 예체능 분야"
   },
   grit: {
     desc: "포기하지 않고 힘든 일도 끝까지 해내는 인내심이에요.",
