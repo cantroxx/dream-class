@@ -649,9 +649,20 @@ function ScheduleScreen({ G, turnInfo, onConfirm }) {
 
   const renderEff = (eff, stressD=0) => {
     const parts = [];
-    for (const k of SK) if (eff[k]) parts.push(`${STAT_META[k].icon}${eff[k]>0?"+":""}${Math.round(eff[k]*mult)}`);
-    if (stressD) parts.push(`😰${stressD>0?"+":""}${stressD}`);
-    return <span style={{fontSize:11,color:P.muted}}>{parts.join(" ")}</span>;
+    for (const k of SK) if (eff[k]) {
+      const val = Math.round(eff[k]*mult);
+      parts.push(`${STAT_META[k].icon} ${STAT_META[k].name} ${val>0?"+":""}${val}`);
+    }
+    if (stressD) {
+      parts.push(`😰 스트레스 ${stressD>0?"+":""}${stressD}`);
+    }
+    return (
+      <span style={{ fontSize:10, color:P.muted, display:"flex", gap:"6px", flexWrap:"wrap", marginTop:"2px" }}>
+        {parts.map((p, i) => (
+          <span key={i} style={{ whiteSpace:"nowrap" }}>{p}</span>
+        ))}
+      </span>
+    );
   };
 
   const peerQuotes = getPeerEvaluations(G);
@@ -866,9 +877,17 @@ function EventScreen({ event, onChoice, mult }) {
             <div style={{ fontWeight:600, fontSize:14, color:P.accent, marginBottom:4 }}>
               {String.fromCharCode(65+i)}. {c.text}
             </div>
-            <div style={{ fontSize:11, color:P.muted }}>
-              {Object.entries(c.eff).filter(([k])=>SK.includes(k)).map(([k,v])=>`${STAT_META[k].icon}${v>0?"+":""}${Math.round(v*mult)}`).join(" ")}
-              {c.stress ? ` 😰${c.stress>0?"+":""}${c.stress}` : ""}
+            <div style={{ fontSize:11, color:P.muted, display:"flex", gap:"8px", flexWrap:"wrap", marginTop:"4px" }}>
+              {Object.entries(c.eff).filter(([k])=>SK.includes(k)).map(([k,v])=>(
+                <span key={k} style={{whiteSpace:"nowrap"}}>
+                  {STAT_META[k].icon} {STAT_META[k].name} {v>0?"+":""}{Math.round(v*mult)}
+                </span>
+              ))}
+              {c.stress ? (
+                <span style={{whiteSpace:"nowrap"}}>
+                  😰 스트레스 {c.stress>0?"+":""}{c.stress}
+                </span>
+              ) : null}
             </div>
           </GlassCard>
         ))}
