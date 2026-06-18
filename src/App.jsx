@@ -109,69 +109,69 @@ const EVENTS = [
 ];
 
 const JOBS = [
-  { name:"의사",emoji:"🩺",cat:"이공계",req:{academic:80,inquiry:60,grit:50} },
-  { name:"과학자",emoji:"🔬",cat:"이공계",req:{inquiry:85,academic:60} },
-  { name:"인공지능(AI) 개발자",emoji:"🤖",cat:"이공계",req:{tech:75,inquiry:70,academic:50} },
-  { name:"약사",emoji:"💊",cat:"이공계",req:{academic:75,inquiry:55,grit:45} },
-  { name:"건축가",emoji:"🏗️",cat:"이공계",req:{creativity:60,inquiry:55,tech:50} },
-  { name:"동물병원 의사",emoji:"🐾",cat:"이공계",req:{inquiry:65,emotion:70,academic:50} },
-  { name:"컴퓨터 프로그래머",emoji:"💻",cat:"IT",req:{tech:80,inquiry:50} },
-  { name:"게임 개발자",emoji:"🎮",cat:"IT",req:{tech:70,creativity:65} },
-  { name:"드론 엔지니어",emoji:"🚁",cat:"IT",req:{tech:70,inquiry:60,physical:30} },
-  { name:"로봇 과학자",emoji:"🦾",cat:"IT",req:{tech:75,inquiry:70} },
-  { name:"빅데이터 분석가",emoji:"📈",cat:"IT",req:{tech:60,academic:65,inquiry:50} },
-  { name:"디자이너",emoji:"🎨",cat:"예술",req:{creativity:75,emotion:60} },
-  { name:"웹툰 작가",emoji:"✏️",cat:"예술",req:{creativity:80,grit:55,emotion:50} },
-  { name:"음악가",emoji:"🎵",cat:"예술",req:{emotion:75,charm:50,grit:40} },
-  { name:"가수",emoji:"🎤",cat:"예체능",req:{charm:75,emotion:60,physical:40} },
-  { name:"댄서 / 안무가",emoji:"🕺",cat:"예체능",req:{physical:75,charm:65,emotion:50} },
-  { name:"배우 / 모델",emoji:"🎭",cat:"예체능",req:{charm:70,emotion:60,social:50} },
-  { name:"영화감독",emoji:"🎬",cat:"예술",req:{creativity:70,emotion:60,social:50} },
-  { name:"뷰티 크리에이터",emoji:"💄",cat:"예술",req:{creativity:65,social:60,emotion:50} },
-  { name:"요리사",emoji:"👨‍🍳",cat:"예술",req:{creativity:65,emotion:60,physical:40} },
-  { name:"교사",emoji:"👩‍🏫",cat:"사회",req:{academic:60,social:70} },
-  { name:"변호사",emoji:"⚖️",cat:"사회",req:{academic:75,social:60,grit:55} },
-  { name:"외교관",emoji:"🌍",cat:"사회",req:{social:80,academic:60,emotion:40} },
-  { name:"기자",emoji:"✍️",cat:"사회",req:{academic:55,emotion:70,social:50} },
-  { name:"유튜버",emoji:"📱",cat:"사회",req:{charm:65,tech:50,social:50} },
-  { name:"환경운동가",emoji:"🌱",cat:"사회",req:{emotion:65,social:65,grit:50} },
-  { name:"프로 운동선수",emoji:"⚽",cat:"체력",req:{physical:85,grit:70} },
-  { name:"e스포츠 선수",emoji:"🕹️",cat:"체력",req:{tech:60,grit:75,physical:40} },
-  { name:"소방관",emoji:"🚒",cat:"체력",req:{physical:70,grit:65,social:40} },
-  { name:"군인/경찰",emoji:"🎖️",cat:"체력",req:{physical:65,grit:70,social:40} },
-  { name:"탐험가",emoji:"🧭",cat:"체력",req:{physical:60,inquiry:60,creativity:45} },
-  { name:"공무원",emoji:"🏛️",cat:"안정",req:{academic:70,grit:60,social:40} },
-  { name:"수학 전문가",emoji:"🧮",cat:"안정",req:{academic:75,grit:55,inquiry:40} },
-  { name:"기업가",emoji:"🚀",cat:"안정",req:{social:75,grit:70,creativity:50} },
-  { name:"간호사",emoji:"💉",cat:"안정",req:{academic:55,emotion:60,physical:50,social:45} },
-  { name:"음식 연구원",emoji:"🧪",cat:"안정",req:{inquiry:60,creativity:55,emotion:45} },
-  { name:"우주 비행사",emoji:"🧑‍🚀",cat:"히든",req:{inquiry:200,physical:200,grit:150} },
-  { name:"글로벌 팝스타",emoji:"🌟",cat:"히든",req:{charm:220,emotion:180,social:150} },
-  { name:"초지능 AI 개발자",emoji:"🌌",cat:"히든",req:{tech:240,inquiry:200,academic:180} },
-  { name:"노벨상 수상자",emoji:"🏆",cat:"히든",req:{inquiry:250,academic:220} },
+  { name:"의사",emoji:"🩺",cat:"이공계",desc:"환자를 진료하고 아픈 사람들을 치료하는 의술의 전문가입니다.",req:{academic:80,inquiry:60,grit:50} },
+  { name:"과학자",emoji:"🔬",cat:"이공계",desc:"세상의 진리를 밝히고 새로운 기술을 연구하는 학자입니다.",req:{inquiry:85,academic:60} },
+  { name:"인공지능(AI) 개발자",emoji:"🤖",cat:"이공계",desc:"스스로 생각하고 학습하는 컴퓨터 인공지능 프로그램을 개발합니다.",req:{tech:75,inquiry:70,academic:50} },
+  { name:"약사",emoji:"💊",cat:"이공계",desc:"환자에 알맞은 약을 조제하고 복약 지도를 수행하는 전문가입니다.",req:{academic:75,inquiry:55,grit:45} },
+  { name:"건축가",emoji:"🏗️",cat:"이공계",desc:"도시와 건물을 설계하고 더 좋은 공간을 계획하는 설계사입니다.",req:{creativity:60,inquiry:55,tech:50} },
+  { name:"동물병원 의사",emoji:"🐾",cat:"이공계",desc:"아프거나 부상당한 작은 동물의 상처와 질병을 치료하는 수의사입니다.",req:{inquiry:65,emotion:70,academic:50} },
+  { name:"컴퓨터 프로그래머",emoji:"💻",cat:"IT",desc:"소프트웨어를 코딩하여 디지털 세상을 편리하게 만드는 개발자입니다.",req:{tech:80,inquiry:50} },
+  { name:"게임 개발자",emoji:"🎮",cat:"IT",desc:"사람들에게 모험과 즐거움을 선사하는 가상 세계 게임을 만듭니다.",req:{tech:70,creativity:65} },
+  { name:"드론 엔지니어",emoji:"🚁",cat:"IT",desc:"무인 항공 드론을 설계하고 조종하며 안전을 점검하는 엔지니어입니다.",req:{tech:70,inquiry:60,physical:30} },
+  { name:"로봇 과학자",emoji:"🦾",cat:"IT",desc:"인간의 생활이나 산업에 혁신을 가져올 지능형 로봇을 만듭니다.",req:{tech:75,inquiry:70} },
+  { name:"빅데이터 분석가",emoji:"📈",cat:"IT",desc:"수많은 정보 속에 숨겨진 트렌드와 가치를 발굴해내는 전문가입니다.",req:{tech:60,academic:65,inquiry:50} },
+  { name:"디자이너",emoji:"🎨",cat:"예술",desc:"아름답고 실용적인 시각 예술을 통해 사물과 콘텐츠를 가치 있게 만듭니다.",req:{creativity:75,emotion:60} },
+  { name:"웹툰 작가",emoji:"✏️",cat:"예술",desc:"흥미진진한 이야기와 생생한 작화로 수많은 독자를 매료하는 이야기꾼입니다.",req:{creativity:80,grit:55,emotion:50} },
+  { name:"음악가",emoji:"🎵",cat:"예술",desc:"멜로디와 하모니로 사람들의 지친 마음을 어루만져 주는 예술가입니다.",req:{emotion:75,charm:50,grit:40} },
+  { name:"가수",emoji:"🎤",cat:"예체능",desc:"매혹적인 목소리와 노래 실력으로 무대를 사로잡는 보컬리스트입니다.",req:{charm:75,emotion:60,physical:40} },
+  { name:"댄서 / 안무가",emoji:"🕺",cat:"예체능",desc:"몸짓으로 감정을 역동적으로 표현하고 새로운 안무를 연출하는 예술가입니다.",req:{physical:75,charm:65,emotion:50} },
+  { name:"배우 / 모델",emoji:"🎭",cat:"예체능",desc:"무대 위나 카메라 앞에서 캐릭터의 인생이나 스타일을 아름답게 표현하는 스타입니다.",req:{charm:70,emotion:60,social:50} },
+  { name:"영화감독",emoji:"🎬",cat:"예술",desc:"이야기와 영상을 아우르며 한 편의 가치 있는 영상 예술을 지휘하는 예술가입니다.",req:{creativity:70,emotion:60,social:50} },
+  { name:"뷰티 크리에이터",emoji:"💄",cat:"예술",desc:"메이크업과 패션 팁을 전파하여 사람들의 외면과 내면을 가꾸어주는 크리에이터입니다.",req:{creativity:65,social:60,emotion:50} },
+  { name:"요리사",emoji:"👨‍🍳",cat:"예술",desc:"엄선된 재료로 맛있는 요리를 선보이며 미식가들의 혀를 즐겁게 하는 셰프입니다.",req:{creativity:65,emotion:60,physical:40} },
+  { name:"교사",emoji:"👩‍🏫",cat:"사회",desc:"지식과 삶의 가치관을 친절하게 가르쳐 훌륭한 인재를 키워내는 교사입니다.",req:{academic:60,social:70} },
+  { name:"변호사",emoji:"⚖️",cat:"사회",desc:"법률 지식으로 억울한 의뢰인을 대변하며 공평한 권리를 수호하는 법조인입니다.",req:{academic:75,social:60,grit:55} },
+  { name:"외교관",emoji:"🌍",cat:"사회",desc:"국가를 대표해 다른 나라와 평화적인 외교를 나누는 통상 협상 전문가입니다.",req:{social:80,academic:60,emotion:40} },
+  { name:"기자",emoji:"✍️",cat:"사회",desc:"세상 구석구석을 탐방 취재하여 신뢰할 수 있는 소식을 신속히 제공하는 언론인입니다.",req:{academic:55,emotion:70,social:50} },
+  { name:"유튜버",emoji:"📱",cat:"사회",desc:"자신만의 기발한 아이디어 영상을 공유해 전 세계와 소통하는 콘텐츠 기획자입니다.",req:{charm:65,tech:50,social:50} },
+  { name:"환경운동가",emoji:"🌱",cat:"사회",desc:"더 건강하고 푸른 미래 지구를 위해 환경 파괴 방지 캠페인을 활발히 벌입니다.",req:{emotion:65,social:65,grit:50} },
+  { name:"프로 운동선수",emoji:"⚽",cat:"체력",desc:"탁월한 신체 능력과 승부사 근성으로 팬들을 전율하게 하는 체육인입니다.",req:{physical:85,grit:70} },
+  { name:"e스포츠 선수",emoji:"🕹️",cat:"체력",desc:"정교한 조작과 두뇌 플레이로 가상 전장을 지배하는 프로 프로게이머입니다.",req:{tech:60,grit:75,physical:40} },
+  { name:"소방관",emoji:"🚒",cat:"체력",desc:"재난 경보 속에서 한 치의 망설임 없이 현장에 뛰어드는 자랑스러운 시민의 수호신입니다.",req:{physical:70,grit:65,social:40} },
+  { name:"군인/경찰",emoji:"🎖️",cat:"체력",desc:"시민들이 편안히 숨 쉴 수 있도록 치안과 평화를 유지하는 든든한 등불입니다.",req:{physical:65,grit:70,social:40} },
+  { name:"탐험가",emoji:"🧭",cat:"체력",desc:"미지의 정글, 설산, 사막을 횡단하며 역사에 남을 가치를 발굴하는 모험가입니다.",req:{physical:60,inquiry:60,creativity:45} },
+  { name:"공무원",emoji:"🏛️",cat:"안정",desc:"공익을 실현하기 위해 헌신적으로 행정 시스템을 관리하는 믿음직한 행정가입니다.",req:{academic:70,grit:60,social:40} },
+  { name:"수학 전문가",emoji:"🧮",cat:"안정",desc:"이론 수학을 비롯해 다양한 수리와 통계를 연구 분석해 산업 혁신에 기여합니다.",req:{academic:75,grit:55,inquiry:40} },
+  { name:"기업가",emoji:"🚀",cat:"안정",desc:"기발한 혁신적 가치로 시장을 창출해 새로운 회사를 창업하고 조직을 이끄는 리더입니다.",req:{social:75,grit:70,creativity:50} },
+  { name:"간호사",emoji:"💉",cat:"안정",desc:"병원에서 환자의 상태를 철저히 돌보고 건강을 지켜주는 친절한 천사입니다.",req:{academic:55,emotion:60,physical:50,social:45} },
+  { name:"음식 연구원",emoji:"🧪",cat:"안정",desc:"식품 원자재를 분석해 인류에게 더 건강하고 영양 가득한 먹거리를 개발합니다.",req:{inquiry:60,creativity:55,emotion:45} },
+  { name:"우주 비행사",emoji:"🧑‍🚀",cat:"히든",desc:"우주선을 타고 머나먼 대기권 밖을 날아가 비밀스러운 행성과 우주 과학을 연구합니다.",req:{inquiry:200,physical:200,grit:150} },
+  { name:"글로벌 팝스타",emoji:"🌟",cat:"히든",desc:"세계를 열광시키는 음악과 스타성으로 빌보드 음원 차트를 점령하는 시대의 아이콘입니다.",req:{charm:220,emotion:180,social:150} },
+  { name:"초지능 AI 개발자",emoji:"🌌",cat:"히든",desc:"인류의 지성을 넘어서는 첨단 AI 모델을 개발해 새로운 과학적 진보를 이끕니다.",req:{tech:240,inquiry:200,academic:180} },
+  { name:"노벨상 수상자",emoji:"🏆",cat:"히든",desc:"인류 발전에 기여한 기념비적인 학술적 발견과 업적으로 최고 권위의 훈장을 수여받았습니다.",req:{inquiry:250,academic:220} },
 ];
 
 const TITLES = [
-  { name:"만능 천재",emoji:"🌟",check:(s,f)=>SK.every(k=>s[k]>=60) },
-  { name:"한 우물 장인",emoji:"⛏️",check:(s)=>SK.some(k=>s[k]>=95) },
-  { name:"덕후의 극치",emoji:"🔥",check:(s)=>SK.some(k=>s[k]>=95)&&SK.filter(k=>s[k]<=30).length>=6 },
-  { name:"인싸 of 인싸",emoji:"🎉",check:(s)=>s.social>=95 },
-  { name:"번아웃 생존자",emoji:"💪",check:(s,f)=>f.burnouts>=3 },
-  { name:"자유영혼",emoji:"🦋",check:(s,f)=>f.neverRepeat },
-  { name:"고집불통",emoji:"🪨",check:(s,f)=>f.maxConsecutiveClub>=10 },
-  { name:"이벤트 헌터",emoji:"🎯",check:(s,f)=>f.eventCount>=12 },
-  { name:"스트레스 제로",emoji:"😌",check:(s,f)=>f.maxStress<=30 },
-  { name:"근성의 아이콘",emoji:"🏔️",check:(s,f)=>s.grit>=90&&f.burnouts>=1 },
-  { name:"균형의 달인",emoji:"⚖️",check:(s)=>{const v=SK.map(k=>s[k]);return Math.max(...v)-Math.min(...v)<=15;} },
-  { name:"늦깎이 대역전왕",emoji:"🔄",check:(s,f)=>f.topStatChanged },
-  { name:"봉사왕",emoji:"🤲",check:(s,f)=>f.volunteerCount>=4 },
-  { name:"체력 괴물",emoji:"🦁",check:(s)=>s.physical>=95 },
-  { name:"숨겨진 재능",emoji:"💎",check:(s,f)=>f.hiddenEvents>=3 },
-  { name:"골드 디스크 아티스트",emoji:"💿",check:(s)=>s.emotion>=90&&s.charm>=80 },
-  { name:"스트리트 댄스 제왕",emoji:"👑",check:(s)=>s.physical>=85&&s.charm>=75 },
-  { name:"반짝반짝 끼쟁이 대장",emoji:"✨",check:(s)=>s.charm>=95 },
-  { name:"스탯 초월자",emoji:"🏆",check:(s)=>SK.some(k=>s[k]>=250) },
-  { name:"초월적인 조화",emoji:"☯️",check:(s)=>SK.every(k=>s[k]>=150) },
+  { name:"만능 천재",emoji:"🌟",desc:"모든 능력치를 골고루 60 이상으로 훌륭하게 달성했습니다.",check:(s,f)=>SK.every(k=>s[k]>=60) },
+  { name:"한 우물 장인",emoji:"⛏️",desc:"한 분야의 능력치를 95 이상으로 깊고 뚝심 있게 길렀습니다.",check:(s)=>SK.some(k=>s[k]>=95) },
+  { name:"덕후의 극치",emoji:"🔥",desc:"한 능력치는 95 이상이지만, 6개 능력치가 30 이하인 독특한 개성파입니다.",check:(s)=>SK.some(k=>s[k]>=95)&&SK.filter(k=>s[k]<=30).length>=6 },
+  { name:"인싸 of 인싸",emoji:"🎉",desc:"친구 관계를 95 이상 달성해 교내 최고의 마당발이 되었습니다.",check:(s)=>s.social>=95 },
+  { name:"번아웃 생존자",emoji:"💪",desc:"극심한 피로로 인한 번아웃을 3회 이상 이겨내며 단단해졌습니다.",check:(s,f)=>f.burnouts>=3 },
+  { name:"자유영혼",emoji:"🦋",desc:"동아리나 방학 일정을 연이어 반복하지 않고 다채로운 일상을 즐겼습니다.",check:(s,f)=>f.neverRepeat },
+  { name:"고집불통",emoji:"🪨",desc:"한 가지 동아리에 매달려 10회 연속으로 활동을 밀어붙였습니다.",check:(s,f)=>f.maxConsecutiveClub>=10 },
+  { name:"이벤트 헌터",emoji:"🎯",desc:"일어나는 다양한 선택의 순간(이벤트)을 12회 이상 열정적으로 겪었습니다.",check:(s,f)=>f.eventCount>=12 },
+  { name:"스트레스 제로",emoji:"😌",desc:"스트레스를 항상 30 이하로 평온하고 안락하게 다스렸습니다.",check:(s,f)=>f.maxStress<=30 },
+  { name:"근성의 아이콘",emoji:"🏔️",desc:"인내심을 90 이상 쌓는 과정에서 쓰라린 번아웃의 벽을 견뎌냈습니다.",check:(s,f)=>s.grit>=90&&f.burnouts>=1 },
+  { name:"균형의 달인",emoji:"⚖️",desc:"모든 스탯을 최대-최소 15차이 미만으로 편중 없이 조화롭게 키웠습니다.",check:(s)=>{const v=SK.map(k=>s[k]);return Math.max(...v)-Math.min(...v)<=15;} },
+  { name:"늦깎이 대역전왕",emoji:"🔄",desc:"초등학생 시절의 특기 스탯을 졸업 시점에 다른 특기로 완전히 뒤집었습니다.",check:(s,f)=>f.topStatChanged },
+  { name:"봉사왕",emoji:"🤲",desc:"방학마다 어려운 이웃을 돕는 따뜻한 봉사활동에 4회 이상 참여했습니다.",check:(s,f)=>f.volunteerCount>=4 },
+  { name:"체력 괴물",emoji:"🦁",desc:"지치지 않는 튼튼한 체력을 95 이상 기르는 데 성공했습니다.",check:(s)=>s.physical>=95 },
+  { name:"숨겨진 재능",emoji:"💎",desc:"학교 안팎에서 일어난 신비로운 돌발 이벤트를 3회 이상 찾아냈습니다.",check:(s,f)=>f.hiddenEvents>=3 },
+  { name:"골드 디스크 아티스트",emoji:"💿",desc:"풍부한 감수성 90 이상과 눈부신 끼 80 이상을 갖춘 음악인입니다.",check:(s)=>s.emotion>=90&&s.charm>=80 },
+  { name:"스트리트 댄스 제왕",emoji:"👑",desc:"강인한 체력 85 이상과 춤사위를 빛낼 끼 75 이상을 지녔습니다.",check:(s)=>s.physical>=85&&s.charm>=75 },
+  { name:"반짝반짝 끼쟁이 대장",emoji:"✨",desc:"무대를 지배하는 폭발적인 스타성(끼)을 95 이상 가득 채웠습니다.",check:(s)=>s.charm>=95 },
+  { name:"스탯 초월자",emoji:"🏆",desc:"한계를 넘어선 하나의 스탯을 250 이상 달성해 경지에 올랐습니다.",check:(s)=>SK.some(k=>s[k]>=250) },
+  { name:"초월적인 조화",emoji:"☯️",desc:"모든 스탯을 150 이상 달성하여 전설적인 완성형 학생이 되었습니다.",check:(s)=>SK.every(k=>s[k]>=150) },
 ];
 
 const CRITICAL_MSGS = [
@@ -497,10 +497,6 @@ const GlassCard = ({ children, accent, onClick, selected, style:s }) => (
 
 function StudentAvatar({ gender = "male", stats, stress, school, width = 120, height = 120 }) {
   const isHighAcademic = stats.academic >= 50 || stats.inquiry >= 50;
-  const isHighPhysical = stats.physical >= 50;
-  const isHighTech = stats.tech >= 50;
-  const isHighArt = stats.creativity >= 50 || stats.emotion >= 50;
-  const isHighGrit = stats.grit >= 50;
 
   let glassesY = 5;
   if (school === "middle") glassesY = 1;
@@ -515,27 +511,7 @@ function StudentAvatar({ gender = "male", stats, stress, school, width = 120, he
 
   return (
     <div style={{ position: "relative", width, height, borderRadius: "50%", overflow: "visible", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      {/* 1. Grit Flame Aura (behind) */}
-      {isHighGrit && (
-        <svg width={width * 1.3} height={height * 1.3} viewBox="0 0 120 120" style={{ position: "absolute", zIndex: 1, pointerEvents: "none", transform: "scale(1.25)" }}>
-          <defs>
-            <radialGradient id="gritFlame" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#ef4444" stopOpacity="0" />
-            </radialGradient>
-            <radialGradient id="gritFlameInner" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#facc15" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          <g opacity="0.8">
-            <path d="M 20 80 Q 5 -10 60 10 Q 115 -10 100 80 Z" fill="url(#gritFlame)" opacity="0.6" />
-            <path d="M 30 80 Q 20 15 60 25 Q 100 15 90 80 Z" fill="url(#gritFlameInner)" opacity="0.8" />
-          </g>
-        </svg>
-      )}
-
-      {/* 2. Base Character Image */}
+      {/* 1. Base Character Image */}
       <img 
         src={imgPath} 
         alt="Student Avatar" 
@@ -551,46 +527,16 @@ function StudentAvatar({ gender = "male", stats, stress, school, width = 120, he
         }} 
       />
 
-      {/* 3. Stat Accessories Overlay (SVG) */}
-      {(isHighAcademic || isHighPhysical || isHighTech || isHighArt) && (
+      {/* 2. Smart Glasses Overlay (SVG) */}
+      {isHighAcademic && (
         <svg width="100%" height="100%" viewBox="0 0 120 120" style={{ position: "absolute", top: 0, left: 0, zIndex: 3, pointerEvents: "none" }}>
-          {/* A. Athletic Sweatband (Physical) */}
-          {isHighPhysical && (
-            <g transform="translate(0, 10)">
-              <path d="M 33 37 Q 60 28 87 37 Q 88 41 87 45 Q 60 36 33 45 Z" fill="#ef4444" stroke="#dc2626" strokeWidth="1" />
-              <path d="M 35 41 Q 60 32 85 41" stroke="#ffffff" strokeWidth="2.5" fill="none" />
-            </g>
-          )}
-
-          {/* B. Smart Glasses (Academic / Inquiry) */}
-          {isHighAcademic && (
-            <g stroke="#334155" strokeWidth="3.5" fill="none" strokeLinecap="round" transform={`translate(0, ${glassesY})`}>
-              <circle cx="46" cy="58" r="11" fill="rgba(255,255,255,0.15)" stroke="#334155" />
-              <circle cx="74" cy="58" r="11" fill="rgba(255,255,255,0.15)" stroke="#334155" />
-              <path d="M 57 58 L 63 58" />
-              <path d="M 35 58 Q 32 56 29 53" />
-              <path d="M 85 58 Q 88 56 91 53" />
-            </g>
-          )}
-
-          {/* C. Artist Beret (Creativity / Emotion) */}
-          {isHighArt && (
-            <g transform="translate(0, 2)">
-              <path d="M 32 30 Q 18 12 60 8 Q 102 12 88 30 Q 75 22 60 23 Q 45 22 32 30" fill="#a78bfa" stroke="#8b5cf6" strokeWidth="1" />
-              <path d="M 60 8 L 60 2" stroke="#8b5cf6" strokeWidth="2.5" strokeLinecap="round" />
-            </g>
-          )}
-
-          {/* D. Programmer Headphones (Tech) */}
-          {isHighTech && (
-            <g transform="translate(0, 8)">
-              <path d="M 32 45 Q 60 18 88 45" stroke="#06b6d4" strokeWidth="4" fill="none" />
-              <rect x="21" y="45" width="9" height="20" rx="4" fill="#0891b2" />
-              <rect x="18" y="48" width="4" height="14" rx="2" fill="#22d3ee" />
-              <rect x="90" y="45" width="9" height="20" rx="4" fill="#0891b2" />
-              <rect x="98" y="48" width="4" height="14" rx="2" fill="#22d3ee" />
-            </g>
-          )}
+          <g stroke="#334155" strokeWidth="3.5" fill="none" strokeLinecap="round" transform={`translate(0, ${glassesY})`}>
+            <circle cx="46" cy="58" r="11" fill="rgba(255,255,255,0.15)" stroke="#334155" />
+            <circle cx="74" cy="58" r="11" fill="rgba(255,255,255,0.15)" stroke="#334155" />
+            <path d="M 57 58 L 63 58" />
+            <path d="M 35 58 Q 32 56 29 53" />
+            <path d="M 85 58 Q 88 56 91 53" />
+          </g>
         </svg>
       )}
     </div>
@@ -1025,17 +971,22 @@ function EndingScreen({ G, job, titles, collection, onTitle }) {
             <StudentAvatar gender={G.gender} stats={G.stats} stress={G.stress} school="high" width={90} height={90} />
           </div>
           <h2 style={{ fontSize:26, color:P.gold, margin:"0 0 4px" }}>{G.name}</h2>
-          <p style={{ fontSize:20, color:P.accent, fontWeight:700, margin:"0 0 20px" }}>{job.name}{job.name==="프리랜서"?" (아직 꿈을 찾는 중...)":""}</p>
+          <p style={{ fontSize:20, color:P.accent, fontWeight:700, margin:"0 0 8px" }}>{job.name}{job.name==="프리랜서"?" (아직 꿈을 찾는 중...)":""}</p>
+          {job.desc && <p style={{ fontSize:13, color:P.muted, maxWidth:320, margin:"0 auto 20px", lineHeight:"1.4", padding:"0 10px" }}>{job.desc}</p>}
         </div>
       )}
       {phase >= 2 && titles.length > 0 && (
-        <div style={{ animation:"fadeIn .8s ease", marginBottom:20 }}>
-          <p style={{ fontSize:13, color:P.muted, marginBottom:8 }}>🎖️ 획득 칭호</p>
-          <div style={{ display:"flex", flexWrap:"wrap", gap:6, justifyContent:"center" }}>
+        <div style={{ animation:"fadeIn .8s ease", marginBottom:20, padding: "0 20px" }}>
+          <p style={{ fontSize:13, color:P.muted, marginBottom:10 }}>🎖️ 획득 칭호 및 달성 사유</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:8, alignItems:"center" }}>
             {titles.map((t,i)=>(
-              <span key={i} style={{ padding:"6px 12px", background:P.gold+"22", border:`1px solid ${P.gold}44`, borderRadius:20, fontSize:13, color:P.gold }}>
-                {t.emoji} {t.name}
-              </span>
+              <div key={i} style={{ display:"flex", alignItems:"center", gap:10, background:P.gold+"11", border:`1px solid ${P.gold}22`, borderRadius:12, padding:"10px 14px", width:"100%", maxWidth:320, textAlign:"left" }}>
+                <span style={{ fontSize:18 }}>{t.emoji}</span>
+                <div>
+                  <div style={{ fontSize:13, color:P.gold, fontWeight:700 }}>{t.name}</div>
+                  <div style={{ fontSize:11, color:P.muted, marginTop:2, lineHeight:"1.3" }}>{t.desc}</div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -1046,7 +997,7 @@ function EndingScreen({ G, job, titles, collection, onTitle }) {
             <StatBars stats={G.stats} stress={G.stress} compact />
           </div>
           <p style={{ fontSize:12, color:P.muted, marginBottom:16 }}>
-            🗄️ 도감: {collection.jobs.length}/33 직업 · {collection.titles.length}/15 칭호
+            🗄️ 도감: {collection.jobs.length}/{JOBS.length} 직업 · {collection.titles.length}/{TITLES.length} 칭호
           </p>
           <Btn onClick={onTitle} color={P.gold}>🏠 타이틀로</Btn>
         </div>
@@ -1062,7 +1013,7 @@ function CollectionScreen({ collection, onBack }) {
         <h2 style={{ fontSize:20, color:P.gold, margin:0 }}>🗄️ 도감</h2>
         <Btn onClick={onBack} small color={P.card}>← 돌아가기</Btn>
       </div>
-      <h3 style={{ fontSize:15, color:P.accent, margin:"0 0 10px" }}>직업 ({collection.jobs.length}/33)</h3>
+      <h3 style={{ fontSize:15, color:P.accent, margin:"0 0 10px" }}>직업 ({collection.jobs.length}/{JOBS.length})</h3>
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(90px,1fr))", gap:6, marginBottom:20 }}>
         {JOBS.map((j,i)=>{
           const unlocked = collection.jobs.includes(j.name);
@@ -1074,7 +1025,7 @@ function CollectionScreen({ collection, onBack }) {
           );
         })}
       </div>
-      <h3 style={{ fontSize:15, color:P.gold, margin:"0 0 10px" }}>칭호 ({collection.titles.length}/15)</h3>
+      <h3 style={{ fontSize:15, color:P.gold, margin:"0 0 10px" }}>칭호 ({collection.titles.length}/{TITLES.length})</h3>
       <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))", gap:6 }}>
         {TITLES.map((t,i)=>{
           const unlocked = collection.titles.includes(t.name);
