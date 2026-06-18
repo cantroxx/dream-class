@@ -151,10 +151,10 @@ const JOBS = [
   { name:"기업가",emoji:"🚀",cat:"안정",desc:"기발한 혁신적 가치로 시장을 창출해 새로운 회사를 창업하고 조직을 이끄는 리더입니다.",req:{social:75,grit:70,creativity:50} },
   { name:"간호사",emoji:"💉",cat:"안정",desc:"병원에서 환자의 상태를 철저히 돌보고 건강을 지켜주는 친절한 천사입니다.",req:{academic:55,emotion:60,physical:50,social:45} },
   { name:"음식 연구원",emoji:"🧪",cat:"안정",desc:"식품 원자재를 분석해 인류에게 더 건강하고 영양 가득한 먹거리를 개발합니다.",req:{inquiry:60,creativity:55,emotion:45} },
-  { name:"우주 비행사",emoji:"🧑‍🚀",cat:"히든",desc:"우주선을 타고 머나먼 대기권 밖을 날아가 비밀스러운 행성과 우주 과학을 연구합니다.",req:{inquiry:200,physical:200,grit:150} },
-  { name:"글로벌 팝스타",emoji:"🌟",cat:"히든",desc:"세계를 열광시키는 음악과 스타성으로 빌보드 음원 차트를 점령하는 시대의 아이콘입니다.",req:{charm:220,emotion:180,social:150} },
-  { name:"초지능 AI 개발자",emoji:"🌌",cat:"히든",desc:"인류의 지성을 넘어서는 첨단 AI 모델을 개발해 새로운 과학적 진보를 이끕니다.",req:{tech:240,inquiry:200,academic:180} },
-  { name:"노벨상 수상자",emoji:"🏆",cat:"히든",desc:"인류 발전에 기여한 기념비적인 학술적 발견과 업적으로 최고 권위의 훈장을 수여받았습니다.",req:{inquiry:250,academic:220} },
+  { name:"우주 비행사",emoji:"🧑‍🚀",cat:"히든",desc:"우주선을 타고 머나먼 대기권 밖을 날아가 비밀스러운 행성과 우주 과학을 연구합니다.",req:{inquiry:350,physical:350,grit:250} },
+  { name:"글로벌 팝스타",emoji:"🌟",cat:"히든",desc:"세계를 열광시키는 음악과 스타성으로 빌보드 음원 차트를 점령하는 시대의 아이콘입니다.",req:{charm:380,emotion:300,social:250} },
+  { name:"초지능 AI 개발자",emoji:"🌌",cat:"히든",desc:"인류의 지성을 넘어서는 첨단 AI 모델을 개발해 새로운 과학적 진보를 이끕니다.",req:{tech:400,inquiry:350,academic:300} },
+  { name:"노벨상 수상자",emoji:"🏆",cat:"히든",desc:"인류 발전에 기여한 기념비적인 학술적 발견과 업적으로 최고 권위의 훈장을 수여받았습니다.",req:{inquiry:420,academic:380} },
 ];
 
 const TITLES = [
@@ -176,8 +176,8 @@ const TITLES = [
   { name:"골드 디스크 아티스트",emoji:"💿",desc:"풍부한 감수성 90 이상과 눈부신 끼 80 이상을 갖춘 음악인입니다.",check:(s)=>s.emotion>=90&&s.charm>=80 },
   { name:"스트리트 댄스 제왕",emoji:"👑",desc:"강인한 체력 85 이상과 춤사위를 빛낼 끼 75 이상을 지녔습니다.",check:(s)=>s.physical>=85&&s.charm>=75 },
   { name:"반짝반짝 끼쟁이 대장",emoji:"✨",desc:"무대를 지배하는 폭발적인 스타성(끼)을 95 이상 가득 채웠습니다.",check:(s)=>s.charm>=95 },
-  { name:"스탯 초월자",emoji:"🏆",desc:"한계를 넘어선 하나의 스탯을 250 이상 달성해 경지에 올랐습니다.",check:(s)=>SK.some(k=>s[k]>=250) },
-  { name:"초월적인 조화",emoji:"☯️",desc:"모든 스탯을 150 이상 달성하여 전설적인 완성형 학생이 되었습니다.",check:(s)=>SK.every(k=>s[k]>=150) },
+  { name:"스탯 초월자",emoji:"🏆",desc:"한계를 넘어선 하나의 스탯을 400 이상 달성해 경지에 올랐습니다.",check:(s)=>SK.some(k=>s[k]>=400) },
+  { name:"초월적인 조화",emoji:"☯️",desc:"모든 스탯을 250 이상 달성하여 전설적인 완성형 학생이 되었습니다.",check:(s)=>SK.every(k=>s[k]>=250) },
 ];
 
 const CRITICAL_MSGS = [
@@ -243,11 +243,13 @@ function calcJob(stats) {
   for (const j of JOBS) {
     const keys = Object.keys(j.req);
     if (keys.every(k => stats[k] >= j.req[k])) {
-      const score = keys.reduce((a, k) => a + stats[k], 0);
+      const baseReqSum = keys.reduce((a, k) => a + j.req[k], 0);
+      const overachieveBonus = keys.reduce((a, k) => a + (stats[k] - j.req[k]) * 0.1, 0);
+      const score = baseReqSum * 10 + overachieveBonus;
       if (score > bestScore) { best = j; bestScore = score; }
     }
   }
-  return best || { name:"프리랜서", emoji:"🌈", cat:"기본" };
+  return best || { name:"프리랜서", emoji:"🌈", cat:"기본", desc:"아직 구체적인 진로를 결정하지 않고 다양한 가능성을 열어두고 있습니다." };
 }
 
 function calcJobProgress(stats) {
@@ -373,11 +375,47 @@ function calcTitles(stats, flags) {
   return TITLES.filter(t => { try { return t.check(stats, flags); } catch { return false; } });
 }
 
-function clamp(v, lo=0, hi=300) { return Math.max(lo, Math.min(hi, v)); }
+function clamp(v, lo=0, hi=500) { return Math.max(lo, Math.min(hi, v)); }
 
 function applyEffects(stats, stress, eff, stressD=0, mult=1) {
   const ns = { ...stats };
-  for (const k of SK) if (eff[k]) ns[k] = clamp(ns[k] + Math.round(eff[k] * mult));
+  let penaltyOverflow = 0;
+
+  for (const k of SK) {
+    if (eff[k]) {
+      const change = Math.round(eff[k] * mult);
+      const targetVal = ns[k] + change;
+      if (targetVal < 0) {
+        penaltyOverflow += Math.abs(targetVal);
+        ns[k] = 0;
+      } else {
+        ns[k] = Math.min(500, targetVal);
+      }
+    }
+  }
+
+  if (penaltyOverflow > 0) {
+    let topStatKey = null;
+    let topStatVal = -1;
+    for (const k of SK) {
+      if (ns[k] > 0 && ns[k] > topStatVal) {
+        topStatVal = ns[k];
+        topStatKey = k;
+      }
+    }
+
+    if (topStatKey) {
+      const actualDeduct = Math.min(ns[topStatKey], penaltyOverflow);
+      ns[topStatKey] -= actualDeduct;
+      const remainingOverflow = penaltyOverflow - actualDeduct;
+      if (remainingOverflow > 0) {
+        stressD += remainingOverflow;
+      }
+    } else {
+      stressD += penaltyOverflow;
+    }
+  }
+
   return { stats: ns, stress: clamp(stress + stressD, 0, 100) };
 }
 
@@ -461,7 +499,7 @@ const StatBars = ({ stats, stress, compact }) => {
               <span style={{color:P.muted}}>{val}</span>
             </div>
             <div style={{ height:6, background:"rgba(255,255,255,.08)", borderRadius:3, overflow:"hidden", marginBottom: isExp ? 6 : 0 }}>
-              <div style={{ width:`${(val / 300) * 100}%`, height:"100%", background:STAT_META[k].color, borderRadius:3, transition:"width .5s" }} />
+              <div style={{ width:`${(val / 500) * 100}%`, height:"100%", background:STAT_META[k].color, borderRadius:3, transition:"width .5s" }} />
             </div>
             {isExp && STAT_DESCS[k] && (
               <div style={{
@@ -691,20 +729,35 @@ function ScheduleScreen({ G, turnInfo, onConfirm, onHome }) {
 
   const isVac = turnInfo.isVacation;
 
-  const renderEff = (eff, stressD=0) => {
+  const renderEff = (id, eff, stressD=0, type="cls") => {
+    let cc = 0;
+    let isConsecutive = false;
+    if (type === "cls" && id === G.lastClsId) { cc = (G.consecutiveClsCount || 0) + 1; isConsecutive = true; }
+    if (type === "club" && id === G.lastClubId) { cc = (G.consecutiveClubCount || 0) + 1; isConsecutive = true; }
+    if (type === "vac" && id === G.lastVacId) { cc = (G.consecutiveVacCount || 0) + 1; isConsecutive = true; }
+
+    const effMult = isConsecutive ? Math.max(0.2, 1.2 - cc * 0.2) : 1.0;
+
     const parts = [];
     for (const k of SK) if (eff[k]) {
-      const val = Math.round(eff[k]*mult);
+      const val = Math.round(eff[k] * mult * effMult);
       parts.push(`${STAT_META[k].icon} ${STAT_META[k].name} ${val>0?"+":""}${val}`);
     }
     if (stressD) {
       parts.push(`😰 스트레스 ${stressD>0?"+":""}${stressD}`);
     }
     return (
-      <span style={{ fontSize:10, color:P.muted, display:"flex", gap:"6px", flexWrap:"wrap", marginTop:"2px" }}>
-        {parts.map((p, i) => (
-          <span key={i} style={{ whiteSpace:"nowrap" }}>{p}</span>
-        ))}
+      <span style={{ fontSize:10, color:P.muted, display:"flex", gap:"4px", flexWrap:"wrap", marginTop:"2px", alignItems:"center" }}>
+        <span style={{ display:"flex", gap:"6px", flexWrap:"wrap" }}>
+          {parts.map((p, i) => (
+            <span key={i} style={{ whiteSpace:"nowrap" }}>{p}</span>
+          ))}
+        </span>
+        {isConsecutive && cc > 1 && (
+          <span style={{ color: P.red, fontWeight: 700, fontSize: 9, display:"block", width:"100%", marginTop:1 }}>
+            ⚠️ 연속 {cc}회차 (효율 {Math.round(effMult * 100)}%)
+          </span>
+        )}
       </span>
     );
   };
@@ -773,7 +826,7 @@ function ScheduleScreen({ G, turnInfo, onConfirm, onHome }) {
                 {availClasses.map(c=>(
                   <GlassCard key={c.id} selected={cls===c.id} accent={P.accent} onClick={()=>setCls(c.id)}>
                     <div style={{ fontWeight:600, fontSize:13, color:cls===c.id?P.accent:P.text }}>{c.name}</div>
-                    {renderEff(c.eff)}
+                    {renderEff(c.id, c.eff, 0, "cls")}
                   </GlassCard>
                 ))}
               </div>
@@ -782,7 +835,7 @@ function ScheduleScreen({ G, turnInfo, onConfirm, onHome }) {
                 {availClubs.map(c=>(
                   <GlassCard key={c.id} selected={club===c.id} accent={P.green} onClick={()=>setClub(c.id)}>
                     <div style={{ fontWeight:600, fontSize:13, color:club===c.id?P.green:P.text }}>{c.name}</div>
-                    {renderEff(c.eff)}
+                    {renderEff(c.id, c.eff, 0, "club")}
                   </GlassCard>
                 ))}
               </div>
@@ -797,7 +850,7 @@ function ScheduleScreen({ G, turnInfo, onConfirm, onHome }) {
                 {availVacs.map(v=>(
                   <GlassCard key={v.id} selected={vac===v.id} accent={P.gold} onClick={()=>setVac(v.id)}>
                     <div style={{ fontWeight:600, fontSize:13, color:vac===v.id?P.gold:P.text }}>{v.name}</div>
-                    {renderEff(v.eff, v.stress||0)}
+                    {renderEff(v.id, v.eff, v.stress||0, "vac")}
                   </GlassCard>
                 ))}
               </div>
@@ -1129,22 +1182,45 @@ export default function App() {
 
     const activityMsgs = [];
 
+    let ccCls = G.consecutiveClsCount || 0;
+    let ccClub = G.consecutiveClubCount || 0;
+    let ccVac = G.consecutiveVacCount || 0;
+
+    if (clsId) {
+      if (clsId === G.lastClsId) ccCls++;
+      else ccCls = 1;
+    }
+
+    if (clubId) {
+      if (clubId === G.lastClubId) ccClub++;
+      else ccClub = 1;
+    }
+
+    if (vacId) {
+      if (vacId === G.lastVacId) ccVac++;
+      else ccVac = 1;
+    }
+
+    const clsEffMult = clsId ? Math.max(0.2, 1.2 - ccCls * 0.2) : 1;
+    const clubEffMult = clubId ? Math.max(0.2, 1.2 - ccClub * 0.2) : 1;
+    const vacEffMult = vacId ? Math.max(0.2, 1.2 - ccVac * 0.2) : 1;
+
     if (clsId) {
       const cls = CLASSES.find(c=>c.id===clsId);
-      const r = applyEffects(ns, nStress, cls.eff, 0, mult * variance);
+      const r = applyEffects(ns, nStress, cls.eff, 0, mult * variance * clsEffMult);
       ns = r.stats; nStress = r.stress;
       if (cls.msgs) activityMsgs.push(cls.msgs[Math.floor(Math.random() * cls.msgs.length)]);
     }
     if (clubId) {
       const club = CLUBS.find(c=>c.id===clubId);
-      const r = applyEffects(ns, nStress, club.eff, 0, mult * variance);
+      const r = applyEffects(ns, nStress, club.eff, 0, mult * variance * clubEffMult);
       ns = r.stats; nStress = r.stress;
       nStress = clamp(nStress + 1, 0, 100);
       if (club.msgs) activityMsgs.push(club.msgs[Math.floor(Math.random() * club.msgs.length)]);
     }
     if (vacId) {
       const vac = VACATIONS.find(v=>v.id===vacId);
-      const r = applyEffects(ns, nStress, vac.eff, vac.stress||0, mult * variance);
+      const r = applyEffects(ns, nStress, vac.eff, vac.stress||0, mult * variance * vacEffMult);
       ns = r.stats; nStress = r.stress;
       if (vac.msgs) activityMsgs.push(vac.msgs[Math.floor(Math.random() * vac.msgs.length)]);
     }
@@ -1173,7 +1249,25 @@ export default function App() {
     let hid = G.hiddenEvents||0;
     if (rollType === "critical") hid++;
 
-    const ng = { ...G, stats:ns, stress:nStress, maxStress:Math.max(G.maxStress||0, nStress), lastActivity:actKey, lastClub:clubId||G.lastClub, currentConsecutiveClub:cc, maxConsecutiveClub:mc, neverRepeat:nr, volunteerCount:vol, hiddenEvents:hid };
+    const ng = {
+      ...G,
+      stats: ns,
+      stress: nStress,
+      maxStress: Math.max(G.maxStress||0, nStress),
+      lastActivity: actKey,
+      lastClub: clubId||G.lastClub,
+      currentConsecutiveClub: cc,
+      maxConsecutiveClub: mc,
+      neverRepeat: nr,
+      volunteerCount: vol,
+      hiddenEvents: hid,
+      lastClsId: clsId || G.lastClsId,
+      lastClubId: clubId || G.lastClubId,
+      lastVacId: vacId || G.lastVacId,
+      consecutiveClsCount: ccCls,
+      consecutiveClubCount: ccClub,
+      consecutiveVacCount: ccVac
+    };
 
     const turnInfo = getTurnInfo(G.turn, G.mode);
     if (turnInfo.year === 6 && !G.topStatElementary) {
